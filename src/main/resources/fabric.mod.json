@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "retroworldgen",
+  "version": "${version}",
+  "name": "Retro World Gen",
+  "description": "",
+  "authors": [
+    "Ambos"
+  ],
+  "contact": {
+    "homepage": "https://github.com/Amb0s",
+    "sources": "https://github.com/Amb0s/retro-world-gen"
+  },
+  "license": "MIT",
+  "icon": "assets/retroworldgen/icon.png",
+  "environment": "*",
+  "mixins": [
+    "retroworldgen.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "minecraft": "1.0.0-beta.7.3"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
