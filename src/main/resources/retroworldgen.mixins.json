@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "ambos.retroworldgen.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "CreateLevelScreenMixin",
+    "DimensionMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
