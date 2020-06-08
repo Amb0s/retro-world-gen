@@ -120,7 +120,7 @@ public class FloatingIslandsLevelSource implements LevelSource {
 
                         int thickness = -25;
                         int less = (int) Math.floor(Math.sqrt((k-0)*(k-0) + (m-0)*(m-0)) / 3D);
-                        if(less > 28) { less = 28; }
+                        if(less > 36) { less = 36; }
                         thickness += less;
 
                         double ovar32 = clamp(getNoise(8, k + (layer * 2000), m + (layer * 2000), 50, 50, 0));
@@ -141,46 +141,69 @@ public class FloatingIslandsLevelSource implements LevelSource {
     }
 
     public void method_1797(int i, int j, byte[] bs, Biome[] args) {
+        byte byte0 = 64;
         double d = 0.03125;
+        this.field_2262 = this.field_2258.generateNoiseOctaves(this.field_2262, i * 16, j * 16, 0, 16, 16, 1, d, d, 1.0);
+        this.field_2263 = this.field_2258.generateNoiseOctaves(this.field_2263, i * 16, 109, j * 16, 16, 1, 16, d, 1.0, d);
         this.field_2264 = this.field_2259.generateNoiseOctaves(this.field_2264, i * 16, j * 16, 0, 16, 16, 1, d * 2.0, d * 2.0, d * 2.0);
         for (int k = 0; k < 16; ++k) {
             for (int l = 0; l < 16; ++l) {
                 Biome var10 = args[k + l * 16];
+                boolean flag = this.field_2262[k + l * 16] + this.rand.nextDouble() * 0.2 > 0.0;
+                boolean flag2 = this.field_2263[k + l * 16] + this.rand.nextDouble() * 0.2 > 3.0;
                 int i2 = (int)(this.field_2264[k + l * 16] / 3.0 + 3.0 + this.rand.nextDouble() * 0.25);
-                int t = -1;
-                boolean air = true;
-
-                byte byte2 = 0;
-
+                int j2 = -1;
+                boolean isExposedToSunlight = true;
+                byte byte2 = var10.topTileId;
+                byte byte3 = var10.underTileId;
                 for (int k2 = 127; k2 >= 0; --k2) {
-
                     int l2 = (l * 16 + k) * 128 + k2;
-
-                    if (bs[l2] == 0) {
-                        t = -1;
+                    byte byte4 = bs[l2];
+                    if (byte4 == 0) {
+                        j2 = -1;
                     }
-
-                    else if (bs[l2] == Tile.STONE.id) {
-                        t++;
-                        if (i2 <= 0) {
-                            byte2 = (byte)Tile.STONE.id;
-                        } else {
-                            if (t == 0 && air) {
+                    else if (byte4 == Tile.STONE.id) {
+                        if (j2 == -1) {
+                            if (i2 <= 0) {
+                                byte2 = 0;
+                                byte3 = (byte)Tile.STONE.id;
+                            }
+                            else if (k2 >= byte0 - 4 && k2 <= byte0 + 1) {
                                 byte2 = var10.topTileId;
-                            } else if (t < 3) {
-                                byte2 = var10.underTileId;
-                            } else {
-                                byte2 = (byte) Tile.STONE.id;
+                                byte3 = var10.underTileId;
+                                if (flag2) {
+                                    byte2 = 0;
+                                }
+                                if (flag2) {
+                                    byte3 = (byte)Tile.GRAVEL.id;
+                                }
+                                if (flag) {
+                                    byte2 = (byte)Tile.SAND.id;
+                                }
+                                if (flag) {
+                                    byte3 = (byte)Tile.SAND.id;
+                                }
+                            }
+                            if (k2 < byte0 && byte2 == 0) {
+                                byte2 = (byte)Tile.STILL_WATER.id;
+                            }
+                            j2 = i2;
+                            if (isExposedToSunlight) {
+                                bs[l2] = byte2;
+                            }
+                            else {
+                                bs[l2] = byte3;
                             }
                         }
-
-                        bs[l2] = byte2;
-
-                        air = false;
-
-                    } else {
-                        t++;
-                        bs[l2] = byte2;
+                        else if (j2 > 0) {
+                            --j2;
+                            bs[l2] = byte3;
+                            if (j2 == 0 && byte3 == Tile.SAND.id) {
+                                j2 = this.rand.nextInt(4);
+                                byte3 = (byte)Tile.SANDSTONE.id;
+                            }
+                        }
+                        isExposedToSunlight = false;
                     }
                 }
             }
