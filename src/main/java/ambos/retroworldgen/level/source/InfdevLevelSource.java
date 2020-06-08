@@ -5,6 +5,7 @@ import net.minecraft.level.Level;
 import net.minecraft.level.biome.Biome;
 import net.minecraft.level.chunk.Chunk;
 import net.minecraft.level.gen.Cave;
+import net.minecraft.level.gen.OverworldCave;
 import net.minecraft.level.source.LevelSource;
 import net.minecraft.level.structure.*;
 import net.minecraft.structure.Ore;
@@ -24,21 +25,21 @@ public class InfdevLevelSource implements LevelSource {
     private InfdevPerlinOctaveNoise field_2259;
     public InfdevPerlinOctaveNoise field_2245;
     public InfdevPerlinOctaveNoise field_2246;
-    public InfdevPerlinOctaveNoise field_2247; // mob spawner noise
-    private Level field_2260; // level
+    public InfdevPerlinOctaveNoise field_2247;
+    private Level field_2260;
     private double[] field_2261;
-    private double[] field_2262 = new double[256]; // sand noise
-    private double[] field_2263 = new double[256]; // gravel noise
-    private double[] field_2264 = new double[256]; // stone noise
-    private Cave cave = new Cave();
-    private Biome[] field_2266; // biomes for generation
+    private double[] field_2262 = new double[256];
+    private double[] field_2263 = new double[256];
+    private double[] field_2264 = new double[256];
+    private Cave cave = new OverworldCave();
+    private Biome[] field_2266;
     double[] field_2248;
     double[] field_2249;
     double[] field_2250;
     double[] field_2251;
     double[] field_2252;
     int[][] field_2253 = new int[32][32];
-    private double[] field_2267; // temperatures
+    private double[] field_2267;
 
     public InfdevLevelSource(Level arg, long l) {
         this.field_2260 = arg;
@@ -53,7 +54,7 @@ public class InfdevLevelSource implements LevelSource {
         this.field_2247 = new InfdevPerlinOctaveNoise(this.rand, 8);
     }
 
-    public void method_1798(int integer1, int integer2, byte[] bs, double[] ds) { // TODO: rename args and local variables
+    public void method_1798(int integer1, int integer2, byte[] bs, double[] ds) {
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
                 double[][] array = new double[33][4];
@@ -90,7 +91,7 @@ public class InfdevLevelSource implements LevelSource {
                                 double n22 = n18 + (n19 - n18) * (n21 / 4.0);
                                 int n23 = 0;
                                 if ((k << 2) + n10 < 64) {
-                                    if (var53 < 0.5D) { // TODO: fix ice
+                                    if (var53 < 0.5D) {
                                         n23 = Tile.ICE.id;
                                     } else {
                                         n23 = Tile.STILL_WATER.id;
@@ -202,7 +203,7 @@ public class InfdevLevelSource implements LevelSource {
         return chunk;
     }
 
-    private double method_1799(double double1, double double2, double double3) { // generate noise
+    private double method_1799(double double1, double double2, double double3) {
         double n;
         if ((n = double2 * 4.0 - 64.0) < 0.0) {
             n *= 3.0;

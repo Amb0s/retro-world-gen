@@ -2,9 +2,10 @@ package ambos.retroworldgen;
 
 public enum LevelType {
     ALPHA("Alpha 1.1.2_01"),
-    INDEV_INLAND("Indev (Inland)"),
+    INLAND("Indev (Inland)"),
+    FLOATING_ISLANDS("Indev (Floating islands)"),
     INFDEV("Infdev 20100415"),
-    FLOATING_ISLANDS("Floating Islands"),
+    SKYLANDS("Skylands"),
     DEFAULT("Default");
 
     public static LevelType selected = DEFAULT;

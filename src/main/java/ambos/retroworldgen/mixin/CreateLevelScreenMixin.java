@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 final class CreateLevelScreenMixin extends Screen {
     @Inject(method = "init", at = @At("RETURN"), cancellable = true)
     private void onInitGui(CallbackInfo ci) {
-        this.buttons.add(new Button(2, this.width / 2 - 85, this.height / 4 + 96 + 6, 170, 20, "World Type: " + LevelType.selected));
+        this.buttons.add(new Button(2, this.width / 2 - 100, this.height / 4 + 96 + 6, "World Type: " + LevelType.selected));
     }
 
     @ModifyArgs(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widgets/Button;<init>(IIILjava/lang/String;)V"))
