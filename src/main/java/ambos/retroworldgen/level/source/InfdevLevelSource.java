@@ -91,12 +91,11 @@ public class InfdevLevelSource implements LevelSource {
                                 double n22 = n18 + (n19 - n18) * (n21 / 4.0);
                                 int n23 = 0;
                                 if ((k << 2) + n10 < 64) {
-                                    if (var53 < 0.5D) {
+                                    if (var53 < 0.5D && (k << 2) + n10 >= 64 - 1) {
                                         n23 = Tile.ICE.id;
                                     } else {
                                         n23 = Tile.STILL_WATER.id;
                                     }
-
                                 }
                                 if (n22 > 0.0) {
                                     n23 = Tile.STONE.id;

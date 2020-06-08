@@ -72,6 +72,7 @@ public class InlandLevelSource implements LevelSource {
                     }
                 }
                 for (int genBlockY = 0; genBlockY < 128; ++genBlockY) {
+                    // double var53 = ds[((abs(m) % 4) * 4 + (abs(l2) % 4)) * 16 + (abs(l2) % 4) * 4 + (genBlockY % 5)];
                     int l3 = 0;
                     if (((m == 0 && i == 0) || (l2 == 0 && j == 0)) && genBlockY <= f1) {
                         l3 = Tile.STONE.id;
@@ -88,7 +89,13 @@ public class InlandLevelSource implements LevelSource {
                     else if (genBlockY <= f1) {
                         l3 = Tile.STONE.id;
                     }
-                    else if (genBlockY <= 64) {
+                    else if (genBlockY < 64) {
+                        /*if (var53 < 0.5D && genBlockY >= 64 - 1) {
+                            l3 = Tile.ICE.id;
+                        }
+                        else {
+
+                        }*/
                         l3 = Tile.STILL_WATER.id;
                     }
                     this.rand.setSeed(i + j * 13871);
@@ -110,9 +117,6 @@ public class InlandLevelSource implements LevelSource {
                     }
                     if (i12 < f1) {
                         i12 = (int)f1;
-                    }
-                    if (genBlockY <= i12 && (l3 == 0 || l3 == Tile.STILL_WATER.id || l3 == Tile.STILL_LAVA.id)) {
-                        l3 = Tile.BRICK.id;
                     }
                     if (l3 < 0) {
                         l3 = 0;
