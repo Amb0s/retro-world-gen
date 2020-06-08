@@ -86,10 +86,11 @@ public class AlphaLevelSource implements LevelSource {
                             double d16 = d11;
                             double d17 = (d12 - d11) * d15;
                             for (int k3 = 0; k3 < 4; ++k3) {
+                                double var53 = ds[(i2 * 4 + i3) * 16 + j2 * 4 + k3];
                                 int l3 = 0;
                                 if (k2 * 8 + l2 < byte2) {
-                                    if (k2 * 8 + l2 >= byte2 - 1) {
-                                        l3 = Tile.STILL_WATER.id;
+                                    if (var53 < 0.5D && k2 * 8 + l2 >= byte2 - 1) {
+                                        l3 = Tile.ICE.id;
                                     }
                                     else {
                                         l3 = Tile.STILL_WATER.id;
