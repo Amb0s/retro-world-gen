@@ -1,6 +1,6 @@
 package ambos.retroworldgen.level.source;
 
-import ambos.retroworldgen.util.noise.AlphaPerlinOctaveNoise;
+import ambos.retroworldgen.util.noise.IndevPerlinOctaveNoise;
 import net.minecraft.level.Level;
 import net.minecraft.level.biome.Biome;
 import net.minecraft.level.chunk.Chunk;
@@ -16,16 +16,16 @@ import net.minecraft.util.ProgressListener;
 
 import java.util.Random;
 
-public class AlphaLevelSource implements LevelSource {
+public class InlandLevelSource implements LevelSource {
     private Random rand;
-    private AlphaPerlinOctaveNoise field_2255;
-    private AlphaPerlinOctaveNoise field_2256;
-    private AlphaPerlinOctaveNoise field_2257;
-    private AlphaPerlinOctaveNoise field_2258;
-    private AlphaPerlinOctaveNoise field_2259;
-    public AlphaPerlinOctaveNoise field_2245;
-    public AlphaPerlinOctaveNoise field_2246;
-    public AlphaPerlinOctaveNoise field_2247;
+    private IndevPerlinOctaveNoise field_2255;
+    private IndevPerlinOctaveNoise field_2256;
+    private IndevPerlinOctaveNoise field_2257;
+    private IndevPerlinOctaveNoise field_2258;
+    private IndevPerlinOctaveNoise field_2259;
+    public IndevPerlinOctaveNoise field_2245;
+    public IndevPerlinOctaveNoise field_2246;
+    public IndevPerlinOctaveNoise field_2247;
     private Level field_2260;
     private double[] field_2261;
     private double[] field_2262 = new double[256];
@@ -40,87 +40,95 @@ public class AlphaLevelSource implements LevelSource {
     double[] field_2252;
     int[][] field_2253 = new int[32][32];
     private double[] field_2267;
-    
-    public AlphaLevelSource(Level arg, long l) {
+
+    public InlandLevelSource(Level arg, long l) {
         this.field_2260 = arg;
         this.rand = new Random(l);
-        this.field_2255 = new AlphaPerlinOctaveNoise(this.rand, 16);
-        this.field_2256 = new AlphaPerlinOctaveNoise(this.rand, 16);
-        this.field_2257 = new AlphaPerlinOctaveNoise(this.rand, 8);
-        this.field_2258 = new AlphaPerlinOctaveNoise(this.rand, 4);
-        this.field_2259 = new AlphaPerlinOctaveNoise(this.rand, 4);
-        this.field_2245 = new AlphaPerlinOctaveNoise(this.rand, 10);
-        this.field_2246 = new AlphaPerlinOctaveNoise(this.rand, 16);
-        this.field_2247 = new AlphaPerlinOctaveNoise(this.rand, 8);
+        this.field_2255 = new IndevPerlinOctaveNoise(this.rand, 16);
+        this.field_2256 = new IndevPerlinOctaveNoise(this.rand, 16);
+        this.field_2257 = new IndevPerlinOctaveNoise(this.rand, 8);
+        this.field_2258 = new IndevPerlinOctaveNoise(this.rand, 4);
+        this.field_2259 = new IndevPerlinOctaveNoise(this.rand, 4);
+        this.field_2245 = new IndevPerlinOctaveNoise(this.rand, 5);
+        this.field_2246 = new IndevPerlinOctaveNoise(this.rand, 5);
+        this.field_2247 = new IndevPerlinOctaveNoise(this.rand, 8);
     }
 
     public void method_1798(int i, int j, byte[] bs, double[] ds) {
-        byte byte0 = 4;
-        byte byte2 = 64;
-        int k = byte0 + 1;
-        byte byte3 = 17;
-        int l = byte0 + 1;
-        this.field_2261 = this.method_1799(this.field_2261, i * byte0, 0, j * byte0, k, byte3, l);
-        for (int i2 = 0; i2 < byte0; ++i2) {
-            for (int j2 = 0; j2 < byte0; ++j2) {
-                for (int k2 = 0; k2 < 16; ++k2) {
-                    double d = 0.125;
-                    double d2 = this.field_2261[((i2 + 0) * l + (j2 + 0)) * byte3 + (k2 + 0)];
-                    double d3 = this.field_2261[((i2 + 0) * l + (j2 + 1)) * byte3 + (k2 + 0)];
-                    double d4 = this.field_2261[((i2 + 1) * l + (j2 + 0)) * byte3 + (k2 + 0)];
-                    double d5 = this.field_2261[((i2 + 1) * l + (j2 + 1)) * byte3 + (k2 + 0)];
-                    double d6 = (this.field_2261[((i2 + 0) * l + (j2 + 0)) * byte3 + (k2 + 1)] - d2) * d;
-                    double d7 = (this.field_2261[((i2 + 0) * l + (j2 + 1)) * byte3 + (k2 + 1)] - d3) * d;
-                    double d8 = (this.field_2261[((i2 + 1) * l + (j2 + 0)) * byte3 + (k2 + 1)] - d4) * d;
-                    double d9 = (this.field_2261[((i2 + 1) * l + (j2 + 1)) * byte3 + (k2 + 1)] - d5) * d;
-                    for (int l2 = 0; l2 < 8; ++l2) {
-                        double d10 = 0.25;
-                        double d11 = d2;
-                        double d12 = d3;
-                        double d13 = (d4 - d2) * d10;
-                        double d14 = (d5 - d3) * d10;
-                        for (int i3 = 0; i3 < 4; ++i3) {
-                            int j3 = i3 + i2 * 4 << 11 | 0 + j2 * 4 << 7 | k2 * 8 + l2;
-                            char c = '\u0080';
-                            double d15 = 0.25;
-                            double d16 = d11;
-                            double d17 = (d12 - d11) * d15;
-                            for (int k3 = 0; k3 < 4; ++k3) {
-                                int l3 = 0;
-                                if (k2 * 8 + l2 < byte2) {
-                                    if (k2 * 8 + l2 >= byte2 - 1) {
-                                        l3 = Tile.STILL_WATER.id;
-                                    }
-                                    else {
-                                        l3 = Tile.STILL_WATER.id;
-                                    }
-                                }
-                                if (d16 > 0.0) {
-                                    l3 = Tile.STONE.id;
-                                }
-                                bs[j3] = (byte)l3;
-                                j3 += c;
-                                d16 += d17;
-                            }
-                            d11 += d13;
-                            d12 += d14;
-                        }
-                        d2 += d6;
-                        d3 += d7;
-                        d4 += d8;
-                        d5 += d9;
+        int k = i << 4;
+        int g11 = j << 4;
+        int l = 0;
+        for (int m = k; m < k + 16; ++m) {
+            for (int l2 = g11; l2 < g11 + 16; ++l2) {
+                float f1 = (float)(this.field_2255.a(m / 0.03125f, 0.0, l2 / 0.03125f) - this.field_2256.a(m / 0.015625f, 0.0, l2 / 0.015625f)) / 512.0f / 4.0f;
+                float f2 = (float)this.field_2258.func_806_a(m / 4.0f, l2 / 4.0f);
+                float f3 = (float)this.field_2245.func_806_a(m / 8.0f, l2 / 8.0f) / 8.0f;
+                f2 = ((f2 <= 0.0f) ? ((float)(this.field_2259.func_806_a(m * 0.2571428f, l2 * 0.2571428f) * f3)) : ((float)(this.field_2257.func_806_a(m * 0.2571428f * 2.0f, l2 * 0.2571428f * 2.0f) * f3 / 4.0)));
+                f1 = (float)(int)(f1 + 64.0f + f2);
+                if ((float)this.field_2259.func_806_a(m, l2) < 0.0f) {
+                    f1 = (float)((int)f1 / 2 << 1);
+                    if ((float)this.field_2259.func_806_a(m / 5.0, l2 / 5.0) < 0.0f) {
+                        ++f1;
                     }
+                }
+                for (int genBlockY = 0; genBlockY < 128; ++genBlockY) {
+                    int l3 = 0;
+                    if (((m == 0 && i == 0) || (l2 == 0 && j == 0)) && genBlockY <= f1) {
+                        l3 = Tile.STONE.id;
+                    }
+                    if (genBlockY == f1 + 1.0f && f1 >= 64.0f && Math.random() < 0.02) {
+                        l3 = 0;
+                    }
+                    else if (genBlockY == f1 && f1 >= 64.0f) {
+                        l3 = Tile.STONE.id;
+                    }
+                    else if (genBlockY <= f1 - 2.0f) {
+                        l3 = Tile.STONE.id;
+                    }
+                    else if (genBlockY <= f1) {
+                        l3 = Tile.STONE.id;
+                    }
+                    else if (genBlockY <= 64) {
+                        l3 = Tile.STILL_WATER.id;
+                    }
+                    this.rand.setSeed(i + j * 13871);
+                    int i12 = (i << 10) + 128 + this.rand.nextInt(512);
+                    int j12 = (j << 10) + 128 + this.rand.nextInt(512);
+                    i12 = m - i12;
+                    j12 = l2 - j12;
+                    if (i12 < 0) {
+                        i12 = -i12;
+                    }
+                    if (j12 < 0) {
+                        j12 = -j12;
+                    }
+                    if (j12 > i12) {
+                        i12 = j12;
+                    }
+                    if ((i12 = 127 - i12) == 255) {
+                        i12 = 1;
+                    }
+                    if (i12 < f1) {
+                        i12 = (int)f1;
+                    }
+                    if (genBlockY <= i12 && (l3 == 0 || l3 == Tile.STILL_WATER.id || l3 == Tile.STILL_LAVA.id)) {
+                        l3 = Tile.BRICK.id;
+                    }
+                    if (l3 < 0) {
+                        l3 = 0;
+                    }
+                    bs[l++] = (byte)l3;
                 }
             }
         }
     }
-    
+
     public void method_1797(int i, int j, byte[] bs, Biome[] args) {
         byte byte0 = 64;
         double d = 0.03125;
-        this.field_2262 = this.field_2258.generateNoiseOctaves(this.field_2262, i * 16, j * 16, 0.0, 16, 16, 1, d, d, 1.0);
-        this.field_2263 = this.field_2258.generateNoiseOctaves(this.field_2263, i * 16, 109.0134, j * 16, 16, 1, 16, d, 1.0, d);
-        this.field_2264 = this.field_2259.generateNoiseOctaves(this.field_2264, i * 16, j * 16, 0.0, 16, 16, 1, d * 2.0, d * 2.0, d * 2.0);
+        this.field_2262 = this.field_2258.generateNoiseOctaves(this.field_2262, i * 16, j * 16, 0, 16, 16, 1, d, d, 1.0);
+        this.field_2263 = this.field_2258.generateNoiseOctaves(this.field_2263, i * 16, 109, j * 16, 16, 1, 16, d, 1.0, d);
+        this.field_2264 = this.field_2259.generateNoiseOctaves(this.field_2264, i * 16, j * 16, 0, 16, 16, 1, d * 2.0, d * 2.0, d * 2.0);
         for (int k = 0; k < 16; ++k) {
             for (int l = 0; l < 16; ++l) {
                 Biome var10 = args[k + l * 16];
@@ -205,91 +213,6 @@ public class AlphaLevelSource implements LevelSource {
         this.cave.generate(this, this.field_2260, i, j, var3);
         chunk.method_873();
         return chunk;
-    }
-    
-    private double[] method_1799(double[] ad, int i, int j, int k, int l, int i1, int j1) {
-        if (ad == null) {
-            ad = new double[l * i1 * j1];
-        }
-        double d = 684.412;
-        double d2 = 684.412;
-        this.field_2251 = this.field_2245.generateNoiseOctaves(this.field_2251, i, k, k, l, 1, j1, 1.0, 0.0, 1.0);
-        this.field_2252 = this.field_2246.generateNoiseOctaves(this.field_2252, i, k, k, l, 1, j1, 100.0, 0.0, 100.0);
-        this.field_2248 = this.field_2257.generateNoiseOctaves(this.field_2248, i, j, k, l, i1, j1, d / 80.0, d2 / 160.0, d / 80.0);
-        this.field_2249 = this.field_2255.generateNoiseOctaves(this.field_2249, i, j, k, l, i1, j1, d, d2, d);
-        this.field_2250 = this.field_2256.generateNoiseOctaves(this.field_2250, i, j, k, l, i1, j1, d, d2, d);
-        int k2 = 0;
-        int l2 = 0;
-        for (int i2 = 0; i2 < l; ++i2) {
-            for (int j2 = 0; j2 < j1; ++j2) {
-                double d3 = (this.field_2251[l2] + 256.0) / 512.0;
-                if (d3 > 1.0) {
-                    d3 = 1.0;
-                }
-                double d4 = 0.0;
-                double d5 = this.field_2252[l2] / 8000.0;
-                if (d5 < 0.0) {
-                    d5 = -d5;
-                }
-                d5 = d5 * 3.0 - 3.0;
-                if (d5 < 0.0) {
-                    d5 /= 2.0;
-                    if (d5 < -1.0) {
-                        d5 = -1.0;
-                    }
-                    d5 /= 1.4;
-                    d5 /= 2.0;
-                    d3 = 0.0;
-                }
-                else {
-                    if (d5 > 1.0) {
-                        d5 = 1.0;
-                    }
-                    d5 /= 6.0;
-                }
-                d3 += 0.5;
-                d5 = d5 * i1 / 16.0;
-                double d6 = i1 / 2.0 + d5 * 4.0;
-                ++l2;
-                for (int k3 = 0; k3 < i1; ++k3) {
-                    double d7 = 0.0;
-                    double d8 = (k3 - d6) * 12.0 / d3;
-                    if (d8 < 0.0) {
-                        d8 *= 4.0;
-                    }
-                    double d9 = this.field_2249[k2] / 512.0;
-                    double d10 = this.field_2250[k2] / 512.0;
-                    double d11 = (this.field_2248[k2] / 10.0 + 1.0) / 2.0;
-                    if (d11 < 0.0) {
-                        d7 = d9;
-                    }
-                    else if (d11 > 1.0) {
-                        d7 = d10;
-                    }
-                    else {
-                        d7 = d9 + (d10 - d9) * d11;
-                    }
-                    d7 -= d8;
-                    if (k3 > i1 - 4) {
-                        double d12 = (k3 - (i1 - 4)) / 3.0f;
-                        d7 = d7 * (1.0 - d12) + -10.0 * d12;
-                    }
-                    if (k3 < d4) {
-                        double d13 = (d4 - k3) / 4.0;
-                        if (d13 < 0.0) {
-                            d13 = 0.0;
-                        }
-                        if (d13 > 1.0) {
-                            d13 = 1.0;
-                        }
-                        d7 = d7 * (1.0 - d13) + -10.0 * d13;
-                    }
-                    ad[k2] = d7;
-                    ++k2;
-                }
-            }
-        }
-        return ad;
     }
 
     @Override
@@ -584,22 +507,18 @@ public class AlphaLevelSource implements LevelSource {
         Sand.fallInstantly = false;
     }
 
-    @Override
     public boolean method_1804(boolean flag, ProgressListener arg) {
         return true;
     }
 
-    @Override
     public boolean method_1801() {
         return false;
     }
 
-    @Override
     public boolean method_1805() {
         return true;
     }
 
-    @Override
     public String toString() {
         return "RandomLevelSource";
     }

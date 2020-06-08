@@ -1,10 +1,12 @@
 package ambos.retroworldgen.level.source;
 
+import ambos.retroworldgen.util.noise.IndevPerlinNoise;
 import ambos.retroworldgen.util.noise.IndevPerlinOctaveNoise;
 import net.minecraft.level.Level;
 import net.minecraft.level.biome.Biome;
 import net.minecraft.level.chunk.Chunk;
 import net.minecraft.level.gen.Cave;
+import net.minecraft.level.gen.OverworldCave;
 import net.minecraft.level.source.LevelSource;
 import net.minecraft.level.structure.*;
 import net.minecraft.structure.Ore;
@@ -15,7 +17,7 @@ import net.minecraft.util.ProgressListener;
 
 import java.util.Random;
 
-public class IndevLevelSource implements LevelSource {
+public class FloatingIslandsLevelSource implements LevelSource {
     private Random rand;
     private IndevPerlinOctaveNoise field_2255;
     private IndevPerlinOctaveNoise field_2256;
@@ -25,12 +27,14 @@ public class IndevLevelSource implements LevelSource {
     public IndevPerlinOctaveNoise field_2245;
     public IndevPerlinOctaveNoise field_2246;
     public IndevPerlinOctaveNoise field_2247;
+    public IndevPerlinOctaveNoise noiseGen11;
+    public IndevPerlinNoise perlinGen1;
     private Level field_2260;
     private double[] field_2261;
     private double[] field_2262 = new double[256];
     private double[] field_2263 = new double[256];
     private double[] field_2264 = new double[256];
-    private Cave cave = new Cave();
+    private Cave cave = new OverworldCave();
     private Biome[] field_2266;
     double[] field_2248;
     double[] field_2249;
@@ -40,7 +44,7 @@ public class IndevLevelSource implements LevelSource {
     int[][] field_2253 = new int[32][32];
     private double[] field_2267;
 
-    public IndevLevelSource(Level arg, long l) {
+    public FloatingIslandsLevelSource(Level arg, long l) {
         this.field_2260 = arg;
         this.rand = new Random(l);
         this.field_2255 = new IndevPerlinOctaveNoise(this.rand, 16);
@@ -51,144 +55,132 @@ public class IndevLevelSource implements LevelSource {
         this.field_2245 = new IndevPerlinOctaveNoise(this.rand, 5);
         this.field_2246 = new IndevPerlinOctaveNoise(this.rand, 5);
         this.field_2247 = new IndevPerlinOctaveNoise(this.rand, 8);
+        this.noiseGen11 = new IndevPerlinOctaveNoise(this.rand, 8);
+        this.perlinGen1 = new IndevPerlinNoise(this.rand);
     }
 
-    public void method_1798(int i, int j, byte[] bs, double[] ds) { // TODO: rename local variables
-        int k = i << 4;
-        int g11 = j << 4;
-        int l = 0;
-        for (int m = k; m < k + 16; ++m) {
-            for (int l2 = g11; l2 < g11 + 16; ++l2) {
-                float f1 = (float)(this.field_2255.a(m / 0.03125f, 0.0, l2 / 0.03125f) - this.field_2256.a(m / 0.015625f, 0.0, l2 / 0.015625f)) / 512.0f / 4.0f;
-                float f2 = (float)this.field_2258.func_806_a(m / 4.0f, l2 / 4.0f);
-                float f3 = (float)this.field_2245.func_806_a(m / 8.0f, l2 / 8.0f) / 8.0f;
-                f2 = ((f2 <= 0.0f) ? ((float)(this.field_2259.func_806_a(m * 0.2571428f, l2 * 0.2571428f) * f3)) : ((float)(this.field_2257.func_806_a(m * 0.2571428f * 2.0f, l2 * 0.2571428f * 2.0f) * f3 / 4.0)));
-                f1 = (float)(int)(f1 + 64.0f + f2);
-                if ((float)this.field_2259.func_806_a(m, l2) < 0.0f) {
-                    f1 = (float)((int)f1 / 2 << 1);
-                    if ((float)this.field_2259.func_806_a(m / 5.0, l2 / 5.0) < 0.0f) {
-                        ++f1;
+    private double clamp(double input)
+    {
+        if (input > 1.0D)
+        {
+            return 1.0D;
+        }
+        if (input < -1.0D)
+        {
+            return -1.0D;
+        }
+        return input;
+    }
+
+    private double getNoise(int level, int x, int y, double xfact, double yfact, double zstart)
+    {
+        double output = 0;
+        for (double l = 1; l <= level*level; l *= 2)
+        {
+            output += perlinGen1.a((x / xfact) * l, (y / yfact) * l) / l;
+        }
+        return output;
+    }
+
+    public void method_1798(int par1, int par2, byte[] bs, double[] ds) {
+        int seaLevel = 64;
+        int i = par1 << 4;
+        int j = par2 << 4;
+        int jj;
+
+            for(int layer = 0; layer < 2; layer++)
+            {
+                jj = 0;
+                for (int k = i; k < i + 16; k++)
+                {
+                    for (int m = j; m < j + 16; m++)
+                    {
+                        float f1 = (float)(this.field_2255.a(k / 0.03125f, 0.0, m / 0.03125f) - this.field_2256.a(k / 0.015625f, 0.0, m / 0.015625f)) / 512.0f / 4.0f;
+                        float f2 = (float)this.field_2258.func_806_a((k + (layer * 2000F)) / 4.0F, (m + (layer * 2000F)) / 4.0F);
+                        float f3 = (float)this.field_2245.func_806_a(k / 8.0f, m / 8.0f) / 8.0f;
+                        f2 = ((f2 <= 0.0f) ? ((float)(this.field_2259.func_806_a(k * 0.2571428f, m * 0.2571428f) * f3)) : ((float)(this.field_2257.func_806_a(k * 0.2571428f * 2.0f, m * 0.2571428f * 2.0f) * f3 / 4.0)));
+                        f1 = (float)(int)(f1 + 64.0f + f2);
+                        int i2 = 35 + (layer * 45) + ((int) f2);
+
+                        if(i2 < 1)
+                        {
+                            i2 = 1;
+                        }
+
+                        if ((float)this.field_2259.func_806_a(k, m) < 0.0F)
+                        {
+                            i2 = i2 / 2 << 1;
+                            f1 = (float)((int)f1 / 2 << 1);
+                            if ((float)this.field_2259.func_806_a(k / 5, m / 5) < 0.0F)
+                            {
+                                i2++;
+                                ++f1;
+                            }
+                        }
+
+                        int thickness = -25;
+                        int less = (int) Math.floor(Math.sqrt((k-0)*(k-0) + (m-0)*(m-0)) / 3D);
+                        if(less > 28) { less = 28; }
+                        thickness += less;
+
+                        double ovar32 = clamp(getNoise(8, k + (layer * 2000), m + (layer * 2000), 50, 50, 0));
+                        int var77 = (int) (ovar32 * (seaLevel / 2)) + 20 + (layer * 45) + thickness;
+
+                        for (int i3 = 0; i3 < 128; i3++)
+                        {
+                            jj++;
+
+                            if (i3 > var77 && i3 < i2)
+                            {
+                                bs[jj] = (byte) Tile.STONE.id;
+                            }
+                        }
                     }
-                }
-                for (int genBlockY = 0; genBlockY < 128; ++genBlockY) {
-                    int l3 = 0;
-                    if (((m == 0 && i == 0) || (l2 == 0 && j == 0)) && genBlockY <= f1) {
-                        l3 = Tile.STONE.id;
-                    }
-                    if (genBlockY == f1 + 1.0f && f1 >= 64.0f && Math.random() < 0.02) {
-                        l3 = 0;
-                    }
-                    else if (genBlockY == f1 && f1 >= 64.0f) {
-                        l3 = Tile.STONE.id;
-                    }
-                    else if (genBlockY <= f1 - 2.0f) {
-                        l3 = Tile.STONE.id;
-                    }
-                    else if (genBlockY <= f1) {
-                        l3 = Tile.STONE.id;
-                    }
-                    else if (genBlockY <= 64) { // TODO: implement ice
-                        l3 = Tile.STILL_WATER.id;
-                    }
-                    this.rand.setSeed(i + j * 13871);
-                    int i12 = (i << 10) + 128 + this.rand.nextInt(512);
-                    int j12 = (j << 10) + 128 + this.rand.nextInt(512);
-                    i12 = m - i12;
-                    j12 = l2 - j12;
-                    if (i12 < 0) {
-                        i12 = -i12;
-                    }
-                    if (j12 < 0) {
-                        j12 = -j12;
-                    }
-                    if (j12 > i12) {
-                        i12 = j12;
-                    }
-                    if ((i12 = 127 - i12) == 255) {
-                        i12 = 1;
-                    }
-                    if (i12 < f1) {
-                        i12 = (int)f1;
-                    }
-                    if (genBlockY <= i12 && (l3 == 0 || l3 == Tile.STILL_WATER.id || l3 == Tile.STILL_LAVA.id)) { // TODO : remove bricks
-                        l3 = Tile.BRICK.id;
-                    }
-                    if (l3 < 0) {
-                        l3 = 0;
-                    }
-                    bs[l++] = (byte)l3;
                 }
             }
-        }
     }
 
     public void method_1797(int i, int j, byte[] bs, Biome[] args) {
-        byte byte0 = 64;
         double d = 0.03125;
-        this.field_2262 = this.field_2258.generateNoiseOctaves(this.field_2262, i * 16, j * 16, 0, 16, 16, 1, d, d, 1.0);
-        this.field_2263 = this.field_2258.generateNoiseOctaves(this.field_2263, i * 16, 109, j * 16, 16, 1, 16, d, 1.0, d);
         this.field_2264 = this.field_2259.generateNoiseOctaves(this.field_2264, i * 16, j * 16, 0, 16, 16, 1, d * 2.0, d * 2.0, d * 2.0);
         for (int k = 0; k < 16; ++k) {
             for (int l = 0; l < 16; ++l) {
                 Biome var10 = args[k + l * 16];
-                boolean flag = this.field_2262[k + l * 16] + this.rand.nextDouble() * 0.2 > 0.0;
-                boolean flag2 = this.field_2263[k + l * 16] + this.rand.nextDouble() * 0.2 > 3.0;
                 int i2 = (int)(this.field_2264[k + l * 16] / 3.0 + 3.0 + this.rand.nextDouble() * 0.25);
-                int j2 = -1;
-                byte byte2 = var10.topTileId;
-                byte byte3 = var10.underTileId;
+                int t = -1;
+                boolean air = true;
+
+                byte byte2 = 0;
+
                 for (int k2 = 127; k2 >= 0; --k2) {
+
                     int l2 = (l * 16 + k) * 128 + k2;
-                    if (k2 <= 0 + this.rand.nextInt(5)) {
-                        bs[l2] = (byte)Tile.BEDROCK.id;
+
+                    if (bs[l2] == 0) {
+                        t = -1;
                     }
-                    else {
-                        byte byte4 = bs[l2];
-                        if (byte4 == 0) {
-                            j2 = -1;
-                        }
-                        else if (byte4 == Tile.STONE.id) {
-                            if (j2 == -1) {
-                                if (i2 <= 0) {
-                                    byte2 = 0;
-                                    byte3 = (byte)Tile.STONE.id;
-                                }
-                                else if (k2 >= byte0 - 4 && k2 <= byte0 + 1) {
-                                    byte2 = var10.topTileId;
-                                    byte3 = var10.underTileId;
-                                    if (flag2) {
-                                        byte2 = 0;
-                                    }
-                                    if (flag2) {
-                                        byte3 = (byte)Tile.GRAVEL.id;
-                                    }
-                                    if (flag) {
-                                        byte2 = (byte)Tile.SAND.id;
-                                    }
-                                    if (flag) {
-                                        byte3 = (byte)Tile.SAND.id;
-                                    }
-                                }
-                                if (k2 < byte0 && byte2 == 0) {
-                                    byte2 = (byte)Tile.STILL_WATER.id;
-                                }
-                                j2 = i2;
-                                if (k2 >= byte0 - 1) {
-                                    bs[l2] = byte2;
-                                }
-                                else {
-                                    bs[l2] = byte3;
-                                }
-                            }
-                            else if (j2 > 0) {
-                                --j2;
-                                bs[l2] = byte3;
-                                if (j2 == 0 && byte3 == Tile.SAND.id) {
-                                    j2 = this.rand.nextInt(4);
-                                    byte3 = (byte)Tile.SANDSTONE.id;
-                                }
+
+                    else if (bs[l2] == Tile.STONE.id) {
+                        t++;
+                        if (i2 <= 0) {
+                            byte2 = (byte)Tile.STONE.id;
+                        } else {
+                            if (t == 0 && air) {
+                                byte2 = var10.topTileId;
+                            } else if (t < 3) {
+                                byte2 = var10.underTileId;
+                            } else {
+                                byte2 = (byte) Tile.STONE.id;
                             }
                         }
+
+                        bs[l2] = byte2;
+
+                        air = false;
+
+                    } else {
+                        t++;
+                        bs[l2] = byte2;
                     }
                 }
             }

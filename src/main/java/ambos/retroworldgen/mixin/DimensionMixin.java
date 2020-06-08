@@ -3,7 +3,8 @@ package ambos.retroworldgen.mixin;
 import ambos.retroworldgen.LevelType;
 
 import ambos.retroworldgen.level.source.AlphaLevelSource;
-import ambos.retroworldgen.level.source.IndevLevelSource;
+import ambos.retroworldgen.level.source.FloatingIslandsLevelSource;
+import ambos.retroworldgen.level.source.InlandLevelSource;
 import ambos.retroworldgen.level.source.InfdevLevelSource;
 import net.minecraft.level.Level;
 import net.minecraft.level.dimension.Dimension;
@@ -26,15 +27,19 @@ final class DimensionMixin {
                 cir.setReturnValue(new AlphaLevelSource(level, level.getSeed()));
                 break;
 
-            case INDEV_INLAND:
-                cir.setReturnValue(new IndevLevelSource(level, level.getSeed()));
+            case INLAND:
+                cir.setReturnValue(new InlandLevelSource(level, level.getSeed()));
+                break;
+
+            case FLOATING_ISLANDS:
+                cir.setReturnValue(new FloatingIslandsLevelSource(level, level.getSeed()));
                 break;
 
             case INFDEV:
                 cir.setReturnValue(new InfdevLevelSource(level, level.getSeed()));
                 break;
 
-            case FLOATING_ISLANDS:
+            case SKYLANDS:
                 cir.setReturnValue(new SkylandsLevelSource(level, level.getSeed()));
                 break;
 
