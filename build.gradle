@@ -12,7 +12,7 @@ buildscript {
 		}
 	}
 	dependencies {
-        classpath 'com.github.Chocohead:Fabric-Loom:97d30fb'
+        classpath 'com.github.Chocohead:Fabric-Loom:bbaa5d7'
 	}
 }
 
@@ -52,7 +52,9 @@ dependencies {
 	//to change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 
-	mappings files("plasma-b1.7.3+build.7.jar")
+	mappings loom.fromCommit("minecraft-cursed-legacy/Plasma", "b464f27") {spec ->
+		spec.version = "b1.7.3-12"
+	}
 
 	modImplementation "com.github.minecraft-cursed-legacy:cursed-fabric-loader:${project.loader_version}"
 
