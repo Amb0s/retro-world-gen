@@ -56,7 +56,7 @@ public final class AlphaLevelSource extends RetroLevelSource {
                         double d13 = (d4 - d2) * d10;
                         double d14 = (d5 - d3) * d10;
                         for (int i3 = 0; i3 < 4; ++i3) {
-                            int j3 = i3 + i2 * 4 << 11 | 0 + j2 * 4 << 7 | k2 * 8 + l2;
+                            int j3 = i3 + i2 * 4 << 11 | j2 * 4 << 7 | k2 * 8 + l2;
                             char c = '\u0080';
                             double d15 = 0.25;
                             double d16 = d11;
@@ -75,7 +75,7 @@ public final class AlphaLevelSource extends RetroLevelSource {
                                 if (d16 > 0.0) {
                                     l3 = Tile.STONE.id;
                                 }
-                                tiles[j3] = (byte)l3;
+                                tiles[j3] = (byte) l3;
                                 j3 += c;
                                 d16 += d17;
                             }
@@ -95,24 +95,22 @@ public final class AlphaLevelSource extends RetroLevelSource {
     protected void buildSurface(int chunkX, int chunkZ, byte[] tiles, Biome[] biomes) {
         byte var5 = 64;
         double var6 = 0.03125D;
-        this.sandNoises = this.beachNoise.generateNoiseOctaves(this.sandNoises, (double)(chunkX * 16), (double)(chunkZ * 16), 0.0D, 16, 16, 1, var6, var6, 1.0D);
-        this.gravelNoises = this.beachNoise.generateNoiseOctaves(this.gravelNoises, (double)(chunkX * 16), 109.0134D, (double)(chunkZ * 16), 16, 1, 16, var6, 1.0D, var6);
-        this.surfaceDepthNoises = this.surfaceDepthNoise.generateNoiseOctaves(this.surfaceDepthNoises, (double)(chunkX * 16), (double)(chunkZ * 16), 0.0D, 16, 16, 1, var6 * 2.0D, var6 * 2.0D, var6 * 2.0D);
-
-        for(int var8 = 0; var8 < 16; ++var8) {
-            for(int var9 = 0; var9 < 16; ++var9) {
+        this.sandNoises = this.beachNoise.sample(this.sandNoises, (double) (chunkX * 16), (double) (chunkZ * 16), 0.0D, 16, 16, 1, var6, var6, 1.0D);
+        this.gravelNoises = this.beachNoise.sample(this.gravelNoises, (double) (chunkX * 16), 109.0134D, (double) (chunkZ * 16), 16, 1, 16, var6, 1.0D, var6);
+        this.surfaceDepthNoises = this.surfaceDepthNoise.sample(this.surfaceDepthNoises, (double) (chunkX * 16), (double) (chunkZ * 16), 0.0D, 16, 16, 1, var6 * 2.0D, var6 * 2.0D, var6 * 2.0D);
+        for (int var8 = 0; var8 < 16; ++var8) {
+            for (int var9 = 0; var9 < 16; ++var9) {
                 Biome var10 = biomes[var8 + var9 * 16];
                 boolean var11 = this.sandNoises[var8 + var9 * 16] + this.rand.nextDouble() * 0.2D > 0.0D;
                 boolean var12 = this.gravelNoises[var8 + var9 * 16] + this.rand.nextDouble() * 0.2D > 3.0D;
-                int var13 = (int)(this.surfaceDepthNoises[var8 + var9 * 16] / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
+                int var13 = (int) (this.surfaceDepthNoises[var8 + var9 * 16] / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
                 int var14 = -1;
                 byte var15 = var10.topTileId;
                 byte var16 = var10.underTileId;
-
-                for(int var17 = 127; var17 >= 0; --var17) {
+                for (int var17 = 127; var17 >= 0; --var17) {
                     int var18 = (var9 * 16 + var8) * 128 + var17;
-                    if (var17 <= 0 + this.rand.nextInt(5)) {
-                        tiles[var18] = (byte)Tile.BEDROCK.id;
+                    if (var17 <= this.rand.nextInt(5)) {
+                        tiles[var18] = (byte) Tile.BEDROCK.id;
                     } else {
                         byte var19 = tiles[var18];
                         if (var19 == 0) {
@@ -121,31 +119,26 @@ public final class AlphaLevelSource extends RetroLevelSource {
                             if (var14 == -1) {
                                 if (var13 <= 0) {
                                     var15 = 0;
-                                    var16 = (byte)Tile.STONE.id;
+                                    var16 = (byte) Tile.STONE.id;
                                 } else if (var17 >= var5 - 4 && var17 <= var5 + 1) {
                                     var15 = var10.topTileId;
                                     var16 = var10.underTileId;
                                     if (var12) {
                                         var15 = 0;
                                     }
-
                                     if (var12) {
-                                        var16 = (byte)Tile.GRAVEL.id;
+                                        var16 = (byte) Tile.GRAVEL.id;
                                     }
-
                                     if (var11) {
-                                        var15 = (byte)Tile.SAND.id;
+                                        var15 = (byte) Tile.SAND.id;
                                     }
-
                                     if (var11) {
-                                        var16 = (byte)Tile.SAND.id;
+                                        var16 = (byte) Tile.SAND.id;
                                     }
                                 }
-
                                 if (var17 < var5 && var15 == 0) {
-                                    var15 = (byte)Tile.STILL_WATER.id;
+                                    var15 = (byte) Tile.STILL_WATER.id;
                                 }
-
                                 var14 = var13;
                                 if (var17 >= var5 - 1) {
                                     tiles[var18] = var15;
@@ -157,7 +150,7 @@ public final class AlphaLevelSource extends RetroLevelSource {
                                 tiles[var18] = var16;
                                 if (var14 == 0 && var16 == Tile.SAND.id) {
                                     var14 = this.rand.nextInt(4);
-                                    var16 = (byte)Tile.SANDSTONE.id;
+                                    var16 = (byte) Tile.SANDSTONE.id;
                                 }
                             }
                         }
@@ -169,7 +162,7 @@ public final class AlphaLevelSource extends RetroLevelSource {
 
     @Override
     protected double calculateTreeNoise(double d1, double d2) {
-        return this.treeNoise.func_806_a(d1, d2);
+        return this.treeNoise.sample(d1, d2);
     }
 
     private double[] calculateNoise(double[] ad, int i, int j, int k, int l, int i1, int j1) {
@@ -178,11 +171,11 @@ public final class AlphaLevelSource extends RetroLevelSource {
         }
         double d = 684.412;
         double d2 = 684.412;
-        this.biomeNoises = this.biomeNoise.generateNoiseOctaves(this.biomeNoises, i, k, k, l, 1, j1, 1.0, 0.0, 1.0);
-        this.depthNoises = this.depthNoise.generateNoiseOctaves(this.depthNoises, i, k, k, l, 1, j1, 100.0, 0.0, 100.0);
-        this.interpolationNoises = this.interpolationNoise.generateNoiseOctaves(this.interpolationNoises, i, j, k, l, i1, j1, d / 80.0, d2 / 160.0, d / 80.0);
-        this.upperInterpolationNoises = this.upperInterpolationNoise.generateNoiseOctaves(this.upperInterpolationNoises, i, j, k, l, i1, j1, d, d2, d);
-        this.lowerInterpolationNoises = this.lowerInterpolationNoise.generateNoiseOctaves(this.lowerInterpolationNoises, i, j, k, l, i1, j1, d, d2, d);
+        this.biomeNoises = this.biomeNoise.sample(this.biomeNoises, i, k, k, l, 1, j1, 1.0, 0.0, 1.0);
+        this.depthNoises = this.depthNoise.sample(this.depthNoises, i, k, k, l, 1, j1, 100.0, 0.0, 100.0);
+        this.interpolationNoises = this.interpolationNoise.sample(this.interpolationNoises, i, j, k, l, i1, j1, d / 80.0, d2 / 160.0, d / 80.0);
+        this.upperInterpolationNoises = this.upperInterpolationNoise.sample(this.upperInterpolationNoises, i, j, k, l, i1, j1, d, d2, d);
+        this.lowerInterpolationNoises = this.lowerInterpolationNoise.sample(this.lowerInterpolationNoises, i, j, k, l, i1, j1, d, d2, d);
         int k2 = 0;
         int l2 = 0;
         for (int i2 = 0; i2 < l; ++i2) {

@@ -8,7 +8,7 @@ import net.minecraft.tile.Tile;
 
 import java.util.Random;
 
-public final  class FloatingIslandsLevelSource extends RetroLevelSource{
+public final class FloatingIslandsLevelSource extends RetroLevelSource{
     private IndevPerlinOctaveNoise upperInterpolationNoise;
     private IndevPerlinOctaveNoise lowerInterpolationNoise;
     private IndevPerlinOctaveNoise interpolationNoise;
@@ -42,14 +42,13 @@ public final  class FloatingIslandsLevelSource extends RetroLevelSource{
         if (input < -1.0D) {
             return -1.0D;
         }
-
         return input;
     }
 
     private double getNoise(int level, int x, int y, double xfact, double yfact, double zstart) {
         double output = 0;
         for (double l = 1; l <= level*level; l *= 2) {
-            output += perlinGen1.a((x / xfact) * l, (y / yfact) * l) / l;
+            output += perlinGen1.method_1204((x / xfact) * l, (y / yfact) * l) / l;
         }
         return output;
     }
@@ -60,39 +59,35 @@ public final  class FloatingIslandsLevelSource extends RetroLevelSource{
         int i = chunkX << 4;
         int j = chunkZ << 4;
         int jj;
-
-        for(int layer = 0; layer < 2; layer++) {
+        for (int layer = 0; layer < 2; layer++) {
             jj = 0;
             for (int k = i; k < i + 16; k++) {
                 for (int m = j; m < j + 16; m++) {
-                    float f1 = (float)(this.upperInterpolationNoise.a(k / 0.03125f, 0.0, m / 0.03125f) - this.lowerInterpolationNoise.a(k / 0.015625f, 0.0, m / 0.015625f)) / 512.0f / 4.0f;
-                    float f2 = (float)this.beachNoise.func_806_a((k + (layer * 2000F)) / 4.0F, (m + (layer * 2000F)) / 4.0F);
-                    float f3 = (float)this.biomeNoise.func_806_a(k / 8.0f, m / 8.0f) / 8.0f;
-                    f2 = ((f2 <= 0.0f) ? ((float)(this.surfaceDepthNoise.func_806_a(k * 0.2571428f, m * 0.2571428f) * f3)) : ((float)(this.interpolationNoise.func_806_a(k * 0.2571428f * 2.0f, m * 0.2571428f * 2.0f) * f3 / 4.0)));
+                    float f1 = (float) (this.upperInterpolationNoise.sample(k / 0.03125f, 0.0, m / 0.03125f) - this.lowerInterpolationNoise.sample(k / 0.015625f, 0.0, m / 0.015625f)) / 512.0f / 4.0f;
+                    float f2 = (float) this.beachNoise.sample((k + (layer * 2000F)) / 4.0F, (m + (layer * 2000F)) / 4.0F);
+                    float f3 = (float) this.biomeNoise.sample(k / 8.0f, m / 8.0f) / 8.0f;
+                    f2 = ((f2 <= 0.0f) ? ((float) (this.surfaceDepthNoise.sample(k * 0.2571428f, m * 0.2571428f) * f3)) : ((float) (this.interpolationNoise.sample(k * 0.2571428f * 2.0f, m * 0.2571428f * 2.0f) * f3 / 4.0)));
                     f1 = (float)(int)(f1 + 64.0f + f2);
                     int i2 = 35 + (layer * 45) + ((int) f2);
-
-                    if(i2 < 1) {
+                    if (i2 < 1) {
                         i2 = 1;
                     }
-
-                    if ((float)this.surfaceDepthNoise.func_806_a(k, m) < 0.0F) {
+                    if ((float) this.surfaceDepthNoise.sample(k, m) < 0.0F) {
                         i2 = i2 / 2 << 1;
-                        f1 = (float)((int)f1 / 2 << 1);
-                        if ((float)this.surfaceDepthNoise.func_806_a(k / 5, m / 5) < 0.0F) {
+                        f1 = (float) ((int) f1 / 2 << 1);
+                        if ((float) this.surfaceDepthNoise.sample(k / 5, m / 5) < 0.0F) {
                             i2++;
                             ++f1;
                         }
                     }
-
                     int thickness = -25;
-                    int less = (int) Math.floor(Math.sqrt((k-0)*(k-0) + (m-0)*(m-0)) / 3D);
-                    if(less > 36) { less = 36; }
+                    int less = (int) Math.floor(Math.sqrt(k * k + m * m) / 3D);
+                    if (less > 36) {
+                        less = 36;
+                    }
                     thickness += less;
-
                     double ovar32 = clamp(getNoise(8, k + (layer * 2000), m + (layer * 2000), 50, 50, 0));
                     int var77 = (int) (ovar32 * (seaLevel / 2)) + 20 + (layer * 45) + thickness;
-
                     for (int i3 = 0; i3 < 128; i3++) {
                         jj++;
 
@@ -109,15 +104,15 @@ public final  class FloatingIslandsLevelSource extends RetroLevelSource{
     protected void buildSurface(int chunkX, int chunkZ, byte[] tiles, Biome[] biomes) {
         byte byte0 = 64;
         double d = 0.03125;
-        this.sandNoises = this.beachNoise.generateNoiseOctaves(this.sandNoises, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d, d, 1.0);
-        this.gravelNoises = this.beachNoise.generateNoiseOctaves(this.gravelNoises, chunkX * 16, 109, chunkZ * 16, 16, 1, 16, d, 1.0, d);
-        this.surfaceDepthNoises = this.surfaceDepthNoise.generateNoiseOctaves(this.surfaceDepthNoises, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d * 2.0, d * 2.0, d * 2.0);
+        this.sandNoises = this.beachNoise.sample(this.sandNoises, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d, d, 1.0);
+        this.gravelNoises = this.beachNoise.sample(this.gravelNoises, chunkX * 16, 109, chunkZ * 16, 16, 1, 16, d, 1.0, d);
+        this.surfaceDepthNoises = this.surfaceDepthNoise.sample(this.surfaceDepthNoises, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d * 2.0, d * 2.0, d * 2.0);
         for (int k = 0; k < 16; ++k) {
             for (int l = 0; l < 16; ++l) {
                 Biome var10 = biomes[k + l * 16];
                 boolean flag = this.sandNoises[k + l * 16] + this.rand.nextDouble() * 0.2 > 0.0;
                 boolean flag2 = this.gravelNoises[k + l * 16] + this.rand.nextDouble() * 0.2 > 3.0;
-                int i2 = (int)(this.surfaceDepthNoises[k + l * 16] / 3.0 + 3.0 + this.rand.nextDouble() * 0.25);
+                int i2 = (int) (this.surfaceDepthNoises[k + l * 16] / 3.0 + 3.0 + this.rand.nextDouble() * 0.25);
                 int j2 = -1;
                 boolean isSunlit = true;
                 byte byte2 = var10.topTileId;
@@ -132,7 +127,7 @@ public final  class FloatingIslandsLevelSource extends RetroLevelSource{
                         if (j2 == -1) {
                             if (i2 <= 0) {
                                 byte2 = 0;
-                                byte3 = (byte)Tile.STONE.id;
+                                byte3 = (byte) Tile.STONE.id;
                             }
                             else if (k2 >= byte0 - 4 && k2 <= byte0 + 1) {
                                 byte2 = var10.topTileId;
@@ -141,17 +136,17 @@ public final  class FloatingIslandsLevelSource extends RetroLevelSource{
                                     byte2 = 0;
                                 }
                                 if (flag2) {
-                                    byte3 = (byte)Tile.GRAVEL.id;
+                                    byte3 = (byte) Tile.GRAVEL.id;
                                 }
                                 if (flag) {
-                                    byte2 = (byte)Tile.SAND.id;
+                                    byte2 = (byte) Tile.SAND.id;
                                 }
                                 if (flag) {
-                                    byte3 = (byte)Tile.SAND.id;
+                                    byte3 = (byte) Tile.SAND.id;
                                 }
                             }
                             if (k2 < byte0 && byte2 == 0) {
-                                byte2 = (byte)Tile.STILL_WATER.id;
+                                byte2 = (byte) Tile.STILL_WATER.id;
                             }
                             j2 = i2;
                             if (isSunlit) {
@@ -166,7 +161,7 @@ public final  class FloatingIslandsLevelSource extends RetroLevelSource{
                             tiles[l2] = byte3;
                             if (j2 == 0 && byte3 == Tile.SAND.id) {
                                 j2 = this.rand.nextInt(4);
-                                byte3 = (byte)Tile.SANDSTONE.id;
+                                byte3 = (byte) Tile.SANDSTONE.id;
                             }
                         }
                         isSunlit = false;
@@ -178,6 +173,6 @@ public final  class FloatingIslandsLevelSource extends RetroLevelSource{
 
     @Override
     protected double calculateTreeNoise(double d1, double d2) {
-        return this.treeNoise.func_806_a(d1, d2);
+        return this.treeNoise.sample(d1, d2);
     }
 }
