@@ -13,9 +13,9 @@ public final class InlandLevelSource extends RetroLevelSource {
     private IndevPerlinOctaveNoise interpolationNoise;
     private IndevPerlinOctaveNoise beachNoise;
     private IndevPerlinOctaveNoise surfaceDepthNoise;
-    public IndevPerlinOctaveNoise biomeNoise;
-    public IndevPerlinOctaveNoise depthNoise;
-    public IndevPerlinOctaveNoise treeNoise;
+    private IndevPerlinOctaveNoise biomeNoise;
+    private IndevPerlinOctaveNoise depthNoise;
+    private IndevPerlinOctaveNoise treeNoise;
 
     public InlandLevelSource(Level level, long seed) {
         this.level = level;
@@ -37,14 +37,14 @@ public final class InlandLevelSource extends RetroLevelSource {
         int l = 0;
         for (int m = k; m < k + 16; ++m) {
             for (int l2 = g11; l2 < g11 + 16; ++l2) {
-                float f1 = (float)(this.upperInterpolationNoise.a(m / 0.03125f, 0.0, l2 / 0.03125f) - this.lowerInterpolationNoise.a(m / 0.015625f, 0.0, l2 / 0.015625f)) / 512.0f / 4.0f;
-                float f2 = (float)this.beachNoise.func_806_a(m / 4.0f, l2 / 4.0f);
-                float f3 = (float)this.biomeNoise.func_806_a(m / 8.0f, l2 / 8.0f) / 8.0f;
-                f2 = ((f2 <= 0.0f) ? ((float)(this.surfaceDepthNoise.func_806_a(m * 0.2571428f, l2 * 0.2571428f) * f3)) : ((float)(this.interpolationNoise.func_806_a(m * 0.2571428f * 2.0f, l2 * 0.2571428f * 2.0f) * f3 / 4.0)));
-                f1 = (float)(int)(f1 + 64.0f + f2);
-                if ((float)this.surfaceDepthNoise.func_806_a(m, l2) < 0.0f) {
-                    f1 = (float)((int)f1 / 2 << 1);
-                    if ((float)this.surfaceDepthNoise.func_806_a(m / 5.0, l2 / 5.0) < 0.0f) {
+                float f1 = (float) (this.upperInterpolationNoise.sample(m / 0.03125f, 0.0, l2 / 0.03125f) - this.lowerInterpolationNoise.sample(m / 0.015625f, 0.0, l2 / 0.015625f)) / 512.0f / 4.0f;
+                float f2 = (float) this.beachNoise.sample(m / 4.0f, l2 / 4.0f);
+                float f3 = (float) this.biomeNoise.sample(m / 8.0f, l2 / 8.0f) / 8.0f;
+                f2 = ((f2 <= 0.0f) ? ((float) (this.surfaceDepthNoise.sample(m * 0.2571428f, l2 * 0.2571428f) * f3)) : ((float) (this.interpolationNoise.sample(m * 0.2571428f * 2.0f, l2 * 0.2571428f * 2.0f) * f3 / 4.0)));
+                f1 = (float) (int) (f1 + 64.0f + f2);
+                if ((float) this.surfaceDepthNoise.sample(m, l2) < 0.0f) {
+                    f1 = (float) ((int) f1 / 2 << 1);
+                    if ((float) this.surfaceDepthNoise.sample(m / 5.0, l2 / 5.0) < 0.0f) {
                         ++f1;
                     }
                 }
@@ -93,12 +93,12 @@ public final class InlandLevelSource extends RetroLevelSource {
                         i12 = 1;
                     }
                     if (i12 < f1) {
-                        i12 = (int)f1;
+                        i12 = (int) f1;
                     }
                     if (l3 < 0) {
                         l3 = 0;
                     }
-                    tiles[l++] = (byte)l3;
+                    tiles[l++] = (byte) l3;
                 }
             }
         }
@@ -108,22 +108,22 @@ public final class InlandLevelSource extends RetroLevelSource {
     protected void buildSurface(int chunkX, int chunkZ, byte[] tiles, Biome[] biomes) {
         byte byte0 = 64;
         double d = 0.03125;
-        this.sandNoises = this.beachNoise.generateNoiseOctaves(this.sandNoises, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d, d, 1.0);
-        this.gravelNoises = this.beachNoise.generateNoiseOctaves(this.gravelNoises, chunkX * 16, 109, chunkZ * 16, 16, 1, 16, d, 1.0, d);
-        this.surfaceDepthNoises = this.surfaceDepthNoise.generateNoiseOctaves(this.surfaceDepthNoises, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d * 2.0, d * 2.0, d * 2.0);
+        this.sandNoises = this.beachNoise.sample(this.sandNoises, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d, d, 1.0);
+        this.gravelNoises = this.beachNoise.sample(this.gravelNoises, chunkX * 16, 109, chunkZ * 16, 16, 1, 16, d, 1.0, d);
+        this.surfaceDepthNoises = this.surfaceDepthNoise.sample(this.surfaceDepthNoises, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d * 2.0, d * 2.0, d * 2.0);
         for (int k = 0; k < 16; ++k) {
             for (int l = 0; l < 16; ++l) {
                 Biome var10 = biomes[k + l * 16];
                 boolean flag = this.sandNoises[k + l * 16] + this.rand.nextDouble() * 0.2 > 0.0;
                 boolean flag2 = this.gravelNoises[k + l * 16] + this.rand.nextDouble() * 0.2 > 3.0;
-                int i2 = (int)(this.surfaceDepthNoises[k + l * 16] / 3.0 + 3.0 + this.rand.nextDouble() * 0.25);
+                int i2 = (int) (this.surfaceDepthNoises[k + l * 16] / 3.0 + 3.0 + this.rand.nextDouble() * 0.25);
                 int j2 = -1;
                 byte byte2 = var10.topTileId;
                 byte byte3 = var10.underTileId;
                 for (int k2 = 127; k2 >= 0; --k2) {
                     int l2 = (l * 16 + k) * 128 + k2;
-                    if (k2 <= 0 + this.rand.nextInt(5)) {
-                        tiles[l2] = (byte)Tile.BEDROCK.id;
+                    if (k2 <= this.rand.nextInt(5)) {
+                        tiles[l2] = (byte) Tile.BEDROCK.id;
                     }
                     else {
                         byte byte4 = tiles[l2];
@@ -134,7 +134,7 @@ public final class InlandLevelSource extends RetroLevelSource {
                             if (j2 == -1) {
                                 if (i2 <= 0) {
                                     byte2 = 0;
-                                    byte3 = (byte)Tile.STONE.id;
+                                    byte3 = (byte) Tile.STONE.id;
                                 }
                                 else if (k2 >= byte0 - 4 && k2 <= byte0 + 1) {
                                     byte2 = var10.topTileId;
@@ -143,17 +143,17 @@ public final class InlandLevelSource extends RetroLevelSource {
                                         byte2 = 0;
                                     }
                                     if (flag2) {
-                                        byte3 = (byte)Tile.GRAVEL.id;
+                                        byte3 = (byte) Tile.GRAVEL.id;
                                     }
                                     if (flag) {
-                                        byte2 = (byte)Tile.SAND.id;
+                                        byte2 = (byte) Tile.SAND.id;
                                     }
                                     if (flag) {
-                                        byte3 = (byte)Tile.SAND.id;
+                                        byte3 = (byte) Tile.SAND.id;
                                     }
                                 }
                                 if (k2 < byte0 && byte2 == 0) {
-                                    byte2 = (byte)Tile.STILL_WATER.id;
+                                    byte2 = (byte) Tile.STILL_WATER.id;
                                 }
                                 j2 = i2;
                                 if (k2 >= byte0 - 1) {
@@ -168,7 +168,7 @@ public final class InlandLevelSource extends RetroLevelSource {
                                 tiles[l2] = byte3;
                                 if (j2 == 0 && byte3 == Tile.SAND.id) {
                                     j2 = this.rand.nextInt(4);
-                                    byte3 = (byte)Tile.SANDSTONE.id;
+                                    byte3 = (byte) Tile.SANDSTONE.id;
                                 }
                             }
                         }
@@ -180,6 +180,6 @@ public final class InlandLevelSource extends RetroLevelSource {
 
     @Override
     protected double calculateTreeNoise(double d1, double d2) {
-        return this.treeNoise.func_806_a(d1, d2);
+        return this.treeNoise.sample(d1, d2);
     }
 }

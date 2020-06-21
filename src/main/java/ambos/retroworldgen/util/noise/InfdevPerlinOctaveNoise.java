@@ -4,7 +4,7 @@ import net.minecraft.util.noise.Noise;
 
 import java.util.Random;
 
-public class InfdevPerlinOctaveNoise extends Noise {
+public final class InfdevPerlinOctaveNoise extends Noise {
     private InfdevPerlinNoise[] generatorCollection;
     private int octaves;
     
@@ -20,7 +20,7 @@ public class InfdevPerlinOctaveNoise extends Noise {
         double d2 = 0.0;
         double d3 = 1.0;
         for (int i = 0; i < this.octaves; ++i) {
-            d2 += this.generatorCollection[i].func_801_a(d * d3, d1 * d3) / d3;
+            d2 += this.generatorCollection[i].method_1204(d * d3, d1 * d3) / d3;
             d3 /= 2.0;
         }
         return d2;
@@ -30,7 +30,7 @@ public class InfdevPerlinOctaveNoise extends Noise {
         double d3 = 0.0;
         double d4 = 1.0;
         for (int i = 0; i < this.octaves; ++i) {
-            d3 += this.generatorCollection[i].a(d * d4, d1 * d4, d2 * d4) / d4;
+            d3 += this.generatorCollection[i].method_1204(d * d4, d1 * d4, d2 * d4) / d4;
             d4 /= 2.0;
         }
         return d3;
@@ -47,7 +47,7 @@ public class InfdevPerlinOctaveNoise extends Noise {
         }
         double d3 = 1.0;
         for (int l2 = 0; l2 < this.octaves; ++l2) {
-            this.generatorCollection[l2].func_805_a(ad, i, j, k, l, i1, j1, d * d3, d1 * d3, d2 * d3, d3);
+            this.generatorCollection[l2].sample(ad, i, j, k, l, i1, j1, d * d3, d1 * d3, d2 * d3, d3);
             d3 /= 2.0;
         }
         return ad;

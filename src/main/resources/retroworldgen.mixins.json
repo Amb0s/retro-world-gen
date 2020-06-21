@@ -4,7 +4,9 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "CreateLevelScreenMixin",
-    "DimensionMixin"
+    "DimensionMixin",
+    "LevelPropertiesMixin"
+
   ],
   "client": [
   ],

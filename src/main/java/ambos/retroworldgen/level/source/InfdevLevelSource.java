@@ -77,7 +77,7 @@ public final class InfdevLevelSource extends RetroLevelSource {
                                 if (n22 > 0.0) {
                                     n23 = Tile.STONE.id;
                                 }
-                                tiles[n20] = (byte)n23;
+                                tiles[n20] = (byte) n23;
                                 n20 += 128;
                             }
                         }
@@ -98,14 +98,14 @@ public final class InfdevLevelSource extends RetroLevelSource {
                 Biome var10 = biomes[k + l * 16];
                 boolean flag = this.sandNoises[k + l * 16] + this.rand.nextDouble() * 0.2 > 0.0;
                 boolean flag2 = this.gravelNoises[k + l * 16] + this.rand.nextDouble() * 0.2 > 3.0;
-                int i2 = (int)(this.surfaceDepthNoises[k + l * 16] / 3.0 + 3.0 + this.rand.nextDouble() * 0.25);
+                int i2 = (int) (this.surfaceDepthNoises[k + l * 16] / 3.0 + 3.0 + this.rand.nextDouble() * 0.25);
                 int j2 = -1;
                 byte byte2 = var10.topTileId;
                 byte byte3 = var10.underTileId;
                 for (int k2 = 127; k2 >= 0; --k2) {
                     int l2 = (l * 16 + k) * 128 + k2;
-                    if (k2 <= 0 + this.rand.nextInt(5)) {
-                        tiles[l2] = (byte)Tile.BEDROCK.id;
+                    if (k2 <= this.rand.nextInt(5)) {
+                        tiles[l2] = (byte) Tile.BEDROCK.id;
                     }
                     else {
                         byte byte4 = tiles[l2];
@@ -116,7 +116,7 @@ public final class InfdevLevelSource extends RetroLevelSource {
                             if (j2 == -1) {
                                 if (i2 <= 0) {
                                     byte2 = 0;
-                                    byte3 = (byte)Tile.STONE.id;
+                                    byte3 = (byte) Tile.STONE.id;
                                 }
                                 else if (k2 >= byte0 - 4 && k2 <= byte0 + 1) {
                                     byte2 = var10.topTileId;
@@ -125,17 +125,17 @@ public final class InfdevLevelSource extends RetroLevelSource {
                                         byte2 = 0;
                                     }
                                     if (flag2) {
-                                        byte3 = (byte)Tile.GRAVEL.id;
+                                        byte3 = (byte) Tile.GRAVEL.id;
                                     }
                                     if (flag) {
-                                        byte2 = (byte)Tile.SAND.id;
+                                        byte2 = (byte) Tile.SAND.id;
                                     }
                                     if (flag) {
-                                        byte3 = (byte)Tile.SAND.id;
+                                        byte3 = (byte) Tile.SAND.id;
                                     }
                                 }
                                 if (k2 < byte0 && byte2 == 0) {
-                                    byte2 = (byte)Tile.STILL_WATER.id;
+                                    byte2 = (byte) Tile.STILL_WATER.id;
                                 }
                                 j2 = i2;
                                 if (k2 >= byte0 - 1) {
@@ -150,7 +150,7 @@ public final class InfdevLevelSource extends RetroLevelSource {
                                 tiles[l2] = byte3;
                                 if (j2 == 0 && byte3 == Tile.SAND.id) {
                                     j2 = this.rand.nextInt(4);
-                                    byte3 = (byte)Tile.SANDSTONE.id;
+                                    byte3 = (byte) Tile.SANDSTONE.id;
                                 }
                             }
                         }
