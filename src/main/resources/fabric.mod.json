@@ -3,12 +3,12 @@
   "id": "retroworldgen",
   "version": "${version}",
   "name": "Retro World Gen",
-  "description": "",
+  "description": "Adds Alpha, Infdev, and Indev world generation options.",
   "authors": [
     "Ambos"
   ],
   "contact": {
-    "homepage": "https://github.com/Amb0s",
+    "issues": "https://github.com/Amb0s/retro-world-gen/issues",
     "sources": "https://github.com/Amb0s/retro-world-gen"
   },
   "license": "MIT",
@@ -20,8 +20,5 @@
   "depends": {
     "fabricloader": "*",
     "minecraft": "1.0.0-beta.7.3"
-  },
-  "suggests": {
-    "flamingo": "*"
   }
 }
