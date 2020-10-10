@@ -29,7 +29,7 @@ final class DimensionMixin  {
             case ALPHA:
                 cir.setReturnValue(new AlphaLevelSource(level, level.getSeed()));
                 break;
-
+            /*
             case INLAND:
                 cir.setReturnValue(new InlandLevelSource(level, level.getSeed()));
                 break;
@@ -37,7 +37,7 @@ final class DimensionMixin  {
             case FLOATING_ISLANDS:
                 cir.setReturnValue(new FloatingIslandsLevelSource(level, level.getSeed()));
                 break;
-
+            */
             case INFDEV:
                 cir.setReturnValue(new InfdevLevelSource(level, level.getSeed()));
                 break;
