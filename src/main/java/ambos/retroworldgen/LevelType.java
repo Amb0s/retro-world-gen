@@ -4,9 +4,9 @@ public enum LevelType {
     DEFAULT("Default"),
     SKYLANDS("Skylands"),
     ALPHA("Alpha 1.1.2_01"),
-    INFDEV("Infdev 20100415"),
-    INLAND("Indev (Inland)"),
-    FLOATING_ISLANDS("Indev (Floating islands)");
+    INFDEV("Infdev 20100415");
+    // INLAND("Indev (Inland)"),
+    // FLOATING_ISLANDS("Indev (Floating islands)");
 
     public static LevelType selected = DEFAULT;
     private final String name;
