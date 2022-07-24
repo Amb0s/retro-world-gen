@@ -18,7 +18,6 @@
     "retroworldgen.mixins.json"
   ],
   "depends": {
-    "fabricloader": "*",
-    "minecraft": "1.0.0-beta.7.3"
+    "fabricloader": ">=0.13.3"
   }
 }

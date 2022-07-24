@@ -1,21 +1,21 @@
-package ambos.retroworldgen.util.noise;
+package ambos.retroworldgen.noise;
 
-import net.minecraft.util.noise.Noise;
+import net.minecraft.src.NoiseGenerator;
 
 import java.util.Random;
 
-public final class InfdevPerlinOctaveNoise extends Noise {
-    private InfdevPerlinNoise[] generatorCollection;
+public class InfdevNoiseGeneratorOctaves extends NoiseGenerator {
+    private InfdevNoiseGeneratorPerlin[] generatorCollection;
     private int octaves;
-    
-    public InfdevPerlinOctaveNoise(final Random random, final int i) {
+
+    public InfdevNoiseGeneratorOctaves(final Random random, final int i) {
         this.octaves = i;
-        this.generatorCollection = new InfdevPerlinNoise[i];
+        this.generatorCollection = new InfdevNoiseGeneratorPerlin[i];
         for (int j = 0; j < i; ++j) {
-            this.generatorCollection[j] = new InfdevPerlinNoise(random);
+            this.generatorCollection[j] = new InfdevNoiseGeneratorPerlin(random);
         }
     }
-    
+
     public double func_806_a(final double d, final double d1) {
         double d2 = 0.0;
         double d3 = 1.0;
@@ -25,7 +25,7 @@ public final class InfdevPerlinOctaveNoise extends Noise {
         }
         return d2;
     }
-    
+
     public double generateNoise(final double d, final double d1, final double d2) {
         double d3 = 0.0;
         double d4 = 1.0;
@@ -35,7 +35,7 @@ public final class InfdevPerlinOctaveNoise extends Noise {
         }
         return d3;
     }
-    
+
     public double[] generateNoiseOctaves(double[] ad, final int i, final int j, final int k, final int l, final int i1, final int j1, final double d, final double d1, final double d2) {
         if (ad == null) {
             ad = new double[l * i1 * j1];
