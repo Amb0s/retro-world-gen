@@ -1,6 +1,7 @@
 package ambos.retroworldgen.mixin;
 
 import ambos.retroworldgen.ChunkProviderRetro2;
+import ambos.retroworldgen.ChunkProviderRetro3;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,6 +15,7 @@ public class GuiCreateWorldMixin {
     private WorldType[] worldTypes;
 
     private WorldType overworldRetro2 = (new WorldType(7, "retro")).setLanguageKey("worldType.retro").setWorldProvider(new WorldProviderGeneric(ChunkProviderRetro2.class)).setSeasonList();
+    private WorldType overworldRetro3 = (new WorldType(7, "retro")).setLanguageKey("worldType.retro").setWorldProvider(new WorldProviderGeneric(ChunkProviderRetro3.class)).setSeasonList();
 
 
     @Inject(method = "<init>", at = @At("TAIL"))
