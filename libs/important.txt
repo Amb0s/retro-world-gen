@@ -1,0 +1,1 @@
+Put a "Better than Adventure!" jar named "bta.jar" here.

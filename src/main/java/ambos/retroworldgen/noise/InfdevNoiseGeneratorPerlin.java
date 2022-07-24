@@ -1,20 +1,20 @@
-package ambos.retroworldgen.util.noise;
+package ambos.retroworldgen.noise;
 
-import net.minecraft.util.noise.Noise;
+import net.minecraft.src.NoiseGenerator;
 
 import java.util.Random;
 
-public final class InfdevPerlinNoise extends Noise {
+public class InfdevNoiseGeneratorPerlin extends NoiseGenerator {
     private int[] permutations = new int[512];
     public double xOffset;
     public double yOffset;
     public double zOffset;
-    
-    public InfdevPerlinNoise() {
+
+    public InfdevNoiseGeneratorPerlin() {
         this(new Random());
     }
-    
-    public InfdevPerlinNoise(Random random) {
+
+    public InfdevNoiseGeneratorPerlin(Random random) {
         this.xOffset = random.nextDouble() * 256.0;
         this.yOffset = random.nextDouble() * 256.0;
         this.zOffset = random.nextDouble() * 256.0;
@@ -29,7 +29,7 @@ public final class InfdevPerlinNoise extends Noise {
             this.permutations[j + 256] = this.permutations[j];
         }
     }
-    
+
     public double sample(double d, double d1, double d2) {
         double d4 = d + this.xOffset;
         double d5 = d1 + this.yOffset;
@@ -63,17 +63,17 @@ public final class InfdevPerlinNoise extends Noise {
         d1 = this.permutations[(int) d1 + 1] + k;
         return this.method_1203(d9, this.method_1203(d8, this.method_1203(d7, this.method_1201(this.permutations[i], d4, d5, d6), this.method_1201(this.permutations[j], d4 - 1.0, d5, d6)), this.method_1203(d7, this.method_1201(this.permutations[(int) d], d4, d5 - 1.0, d6), this.method_1201(this.permutations[(int) d1], d4 - 1.0, d5 - 1.0, d6))), this.method_1203(d8, this.method_1203(d7, this.method_1201(this.permutations[i + 1], d4, d5, d6 - 1.0), this.method_1201(this.permutations[j + 1], d4 - 1.0, d5, d6 - 1.0)), this.method_1203(d7, this.method_1201(this.permutations[(int) d + 1], d4, d5 - 1.0, d6 - 1.0), this.method_1201(this.permutations[(int) d1 + 1], d4 - 1.0, d5 - 1.0, d6 - 1.0))));
     }
-    
+
     public final double method_1203(double d, double d1, double d2) {
         return d1 + d * (d2 - d1);
     }
-    
+
     public final double method_1201(int i, double d, double d1, double d2) {
         double d4 = ((i &= 0xF) >= 8) ? d1 : d;
         double d5 = (i >= 4) ? ((i != 12 && i != 14) ? d2 : d) : d1;
         return (((i & 0x1) != 0x0) ? (-d4) : d4) + (((i & 0x2) != 0x0) ? (-d5) : d5);
     }
-    
+
     public double method_1204(double d, double d1) {
         return this.sample(d, d1, 0.0);
     }
@@ -81,7 +81,7 @@ public final class InfdevPerlinNoise extends Noise {
     public double method_1204(double d, double d1, double d2) {
         return this.sample(d, d1, d2);
     }
-    
+
     public void sample(double[] array, int i, int j, int k, int l, int i1, int j1, double d1, double d2, double d3, double d4) {
         int l2 = 0;
         double d5 = 1.0 / d4;
