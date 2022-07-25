@@ -3,7 +3,8 @@
   "package": "ambos.retroworldgen.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "GuiCreateWorldMixin"
+    "GuiCreateWorldMixin",
+    "WorldTypeMixin"
   ],
   "client": [
   ],

@@ -1,7 +1,5 @@
 package ambos.retroworldgen.mixin;
 
-import ambos.retroworldgen.ChunkProviderRetro2;
-import ambos.retroworldgen.ChunkProviderRetro3;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -9,17 +7,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Arrays;
+
 @Mixin(value = GuiCreateWorld.class, remap = false)
 public class GuiCreateWorldMixin {
     @Shadow
     private WorldType[] worldTypes;
 
-    private WorldType overworldRetro2 = (new WorldType(7, "retro")).setLanguageKey("worldType.retro").setWorldProvider(new WorldProviderGeneric(ChunkProviderRetro2.class)).setSeasonList();
-    private WorldType overworldRetro3 = (new WorldType(7, "retro")).setLanguageKey("worldType.retro").setWorldProvider(new WorldProviderGeneric(ChunkProviderRetro3.class)).setSeasonList();
-
-
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void changeWorlTypeList(GuiScreen guiscreen, CallbackInfo ci){
-        this.worldTypes = new WorldType[]{WorldType.overworldDeeper, WorldType.overworld, WorldType.overworldWinter, WorldType.overworldIslands, WorldType.overworldFlat, WorldType.overworldHell, WorldType.overworldWoods, WorldType.overworldParadise, overworldRetro2};
+    private void changeAvailableWorldTypeList(GuiScreen guiscreen, CallbackInfo ci) {
+        this.worldTypes = Arrays.copyOf(this.worldTypes, this.worldTypes.length + 2);
+        this.worldTypes[this.worldTypes.length - 1] = WorldType.worldTypes[15];
+        this.worldTypes[this.worldTypes.length - 2] = WorldType.worldTypes[14];
     }
 }
