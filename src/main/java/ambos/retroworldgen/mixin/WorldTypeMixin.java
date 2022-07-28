@@ -21,7 +21,7 @@ public class WorldTypeMixin {
     @Inject(method = "<clinit>", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/src/WorldType;<init>(ILjava/lang/String;)V", ordinal = 0))
     private static void changeWorldTypeListLength(CallbackInfo ci) {
-        worldTypes = new WorldType[16]; // Called before the first world type instanciation.
+        worldTypes = new WorldType[16]; // Called before the first world type instantiation.
     }
 
     @Inject(method = "<clinit>", at = @At("TAIL"))
