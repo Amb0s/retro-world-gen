@@ -8,86 +8,96 @@ import net.minecraft.src.*;
 import java.util.Random;
 
 public class ChunkProviderRetro3 extends ChunkProviderRetro {
-    private Random rand = new Random();
-    private Random rand2 = new Random();
-    private IndevNoiseGeneratorOctaves noiseGen3 = new IndevNoiseGeneratorOctaves(16);
-    private IndevNoiseGeneratorOctaves mobSpawnerNoise = new IndevNoiseGeneratorOctaves(16);
-    private IndevNoiseGeneratorOctaves f = new IndevNoiseGeneratorOctaves(8);
-    private IndevNoiseGeneratorOctaves g = new IndevNoiseGeneratorOctaves(4);
-    private IndevNoiseGeneratorOctaves h = new IndevNoiseGeneratorOctaves(4);
-    private IndevNoiseGeneratorOctaves i = new IndevNoiseGeneratorOctaves(5);
+    private final Random rand;
+    private IndevNoiseGeneratorOctaves upperInterpolationNoise;
+    private IndevNoiseGeneratorOctaves lowerInterpolationNoise;
+    private IndevNoiseGeneratorOctaves interpolationNoise;
+    private IndevNoiseGeneratorOctaves beachNoise;
+    private IndevNoiseGeneratorOctaves surfaceDepthNoise;
+    private IndevNoiseGeneratorOctaves biomeNoise;
+
 
     public ChunkProviderRetro3(World world, long l) {
         super(world, l);
+        this.rand = new Random(l);
+        this.upperInterpolationNoise = new IndevNoiseGeneratorOctaves(this.rand, 16);
+        this.lowerInterpolationNoise = new IndevNoiseGeneratorOctaves(this.rand, 16);
+        this.interpolationNoise = new IndevNoiseGeneratorOctaves(this.rand, 8);
+        this.beachNoise = new IndevNoiseGeneratorOctaves((this.rand), 4);
+        this.surfaceDepthNoise = new IndevNoiseGeneratorOctaves((this.rand), 4);
+        this.biomeNoise = new IndevNoiseGeneratorOctaves((this.rand), 5);
         this.field_922_a = new NoiseGeneratorOctaves(this.rand, 10);
         this.field_921_b = new NoiseGeneratorOctaves(this.rand, 16);
     }
 
     @Override
     public void generateTerrain(int chunkX, int chunkZ, short[] tiles, BiomeGenBase[] biomes, double[] temperatures) {
-        int i1 = chunkX << 4;
-        int i2 = chunkZ << 4;
-        int i5 = 0;
-        for(int i6 = i1; i6 < i1 + 16; ++i6) {
-            for(int i7 = i2; i7 < i2 + 16; ++i7) {
-                int i8 = i6 / 1024;
-                int i9 = i7 / 1024;
-                float f10 = (float)(this.noiseGen3.generateNoiseOctaves((double)((float)i6 / 0.03125F), 0.0D, (double)((float)i7 / 0.03125F)) - this.mobSpawnerNoise.generateNoiseOctaves((double)((float)i6 / 0.015625F), 0.0D, (double)((float)i7 / 0.015625F))) / 512.0F / 4.0F;
-                float f11 = (float)this.h.noiseGenerator((double)((float)i6 / 4.0F), (double)((float)i7 / 4.0F));
-                float f12 = (float)this.i.noiseGenerator((double)((float)i6 / 8.0F), (double)((float)i7 / 8.0F)) / 8.0F;
-                f11 = f11 > 0.0F ? (float)(this.f.noiseGenerator((double)((float)i6 * 0.25714284F * 2.0F), (double)((float)i7 * 0.25714284F * 2.0F)) * (double)f12 / 4.0D) : (float)(this.g.noiseGenerator((double)((float)i6 * 0.25714284F), (double)((float)i7 * 0.25714284F)) * (double)f12);
-                int i13 = (int)(f10 + 64.0F + f11);
-                if((float)this.h.noiseGenerator((double)i6, (double)i7) < 0.0F) {
-                    i13 = i13 / 2 << 1;
-                    if((float)this.h.noiseGenerator((double)(i6 / 5), (double)(i7 / 5)) < 0.0F) {
-                        ++i13;
+        int k = chunkX << 4;
+        int g11 = chunkZ << 4;
+        int l = 0;
+        for (int m = k; m < k + 16; ++m) {
+            for (int l2 = g11; l2 < g11 + 16; ++l2) {
+                float f1 = (float) (this.upperInterpolationNoise.generateNoiseOctaves(m / 0.03125f, 0.0, l2 / 0.03125f) - this.lowerInterpolationNoise.generateNoiseOctaves(m / 0.015625f, 0.0, l2 / 0.015625f)) / 512.0f / 4.0f;
+                float f2 = (float) this.beachNoise.noiseGenerator(m / 4.0f, l2 / 4.0f);
+                float f3 = (float) this.biomeNoise.noiseGenerator(m / 8.0f, l2 / 8.0f) / 8.0f;
+                f2 = ((f2 <= 0.0f) ? ((float) (this.surfaceDepthNoise.noiseGenerator(m * 0.2571428f, l2 * 0.2571428f) * f3)) : ((float) (this.interpolationNoise.noiseGenerator(m * 0.2571428f * 2.0f, l2 * 0.2571428f * 2.0f) * f3 / 4.0)));
+                f1 = (float) (int) (f1 + 64.0f + f2);
+                if ((float) this.surfaceDepthNoise.noiseGenerator(m, l2) < 0.0f) {
+                    f1 = (float) ((int) f1 / 2 << 1);
+                    if ((float) this.surfaceDepthNoise.noiseGenerator(m / 5.0, l2 / 5.0) < 0.0f) {
+                        ++f1;
                     }
                 }
-
-                for(int i14 = 0; i14 < 256; ++i14) {
-                    int i15 = 0;
-                    if(i14 == i13 && i13 >= 63) {
-                        i15 = Block.stone.blockID;
-                    } else if(i14 == i13) {
-                        i15 = Block.stone.blockID;
-                    } else if(i14 <= i13 - 2) {
-                        i15 = Block.stone.blockID;
-                    } else if(i14 <= i13) {
-                        i15 = Block.stone.blockID;
-                    } else if(i14 < 64) {
-                        i15 = Block.fluidWaterStill.blockID;
+                for (int genBlockY = 0; genBlockY < 256; ++genBlockY) {
+                    // double var53 = ds[((abs(m) % 4) * 4 + (abs(l2) % 4)) * 16 + (abs(l2) % 4) * 4 + (genBlockY % 5)];
+                    int l3 = 0;
+                    if (((m == 0 && chunkX == 0) || (l2 == 0 && chunkZ == 0)) && genBlockY <= f1) {
+                        l3 = Block.stone.blockID;
                     }
-
-                    this.rand2.setSeed((long)(i8 + i9 * 13871));
-                    int i16 = (i8 << 10) + 256 + this.rand2.nextInt(512);
-                    int i17 = (i9 << 10) + 256 + this.rand2.nextInt(512);
-                    i16 = i6 - i16;
-                    i17 = i7 - i17;
-                    if(i16 < 0) {
-                        i16 = -i16;
+                    if (genBlockY == f1 + 1.0f && f1 >= 64.0f && Math.random() < 0.02) {
+                        l3 = 0;
                     }
-
-                    if(i17 < 0) {
-                        i17 = -i17;
+                    else if (genBlockY == f1 && f1 >= 64.0f) {
+                        l3 = Block.stone.blockID;
                     }
-
-                    if(i17 > i16) {
-                        i16 = i17;
+                    else if (genBlockY <= f1 - 2.0f) {
+                        l3 = Block.stone.blockID;
                     }
-
-                    if((i16 = 127 - i16) == 255) {
-                        i16 = 1;
+                    else if (genBlockY <= f1) {
+                        l3 = Block.stone.blockID;
                     }
-
-                    if(i16 < i13) {
-                        i16 = i13;
+                    else if (genBlockY < 64) {
+                        /*if (var53 < 0.5D && genBlockY >= 64 - 1) {
+                            l3 = Tile.ICE.id;
+                        }
+                        else {
+                        }*/
+                        l3 = Block.fluidWaterStill.blockID;
                     }
-
-                    if(i15 < 0) {
-                        i15 = 0;
+                    this.rand.setSeed(chunkX + chunkZ * 13871);
+                    int i12 = (chunkX << 10) + 256 + this.rand.nextInt(512);
+                    int j12 = (chunkZ << 10) + 256 + this.rand.nextInt(512);
+                    i12 = m - i12;
+                    j12 = l2 - j12;
+                    if (i12 < 0) {
+                        i12 = -i12;
                     }
-
-                    tiles[i5++] = (short)i15;
+                    if (j12 < 0) {
+                        j12 = -j12;
+                    }
+                    if (j12 > i12) {
+                        i12 = j12;
+                    }
+                    if ((i12 = 127 - i12) == 255) {
+                        i12 = 1;
+                    }
+                    if (i12 < f1) {
+                        i12 = (int) f1;
+                    }
+                    if (l3 < 0) {
+                        l3 = 0;
+                    }
+                    tiles[l++] = (short) l3;
                 }
             }
         }
