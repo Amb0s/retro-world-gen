@@ -3,7 +3,7 @@
   "id": "retroworldgen",
   "version": "${version}",
   "name": "Retro World Gen",
-  "description": "Adds Alpha, Infdev, and Indev world generation options.",
+  "description": "Adds Infdev and Indev world generation options.",
   "authors": [
     "Ambos"
   ],
