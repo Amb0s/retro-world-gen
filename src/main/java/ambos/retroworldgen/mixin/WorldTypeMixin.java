@@ -13,10 +13,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = WorldType.class, remap = false)
 public class WorldTypeMixin {
     @Shadow
-    public static WorldType[] worldTypes = new WorldType[16];
-
+    public static WorldType[] worldTypes;
     private static WorldType overworldRetro2;
     private static WorldType overworldRetro3;
+
+
+    @Inject(method = "<clinit>", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/src/WorldType;<init>(ILjava/lang/String;)V", ordinal = 0))
+    private static void changeWorldTypeListLength(CallbackInfo ci) {
+        worldTypes = new WorldType[16]; // Called before the first world type instanciation.
+    }
 
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void changeWorldTypeList(CallbackInfo ci) {
