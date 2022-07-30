@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Arrays;
 
 @Mixin(value = GuiCreateWorld.class, remap = false)
-public class GuiCreateWorldMixin {
+final class GuiCreateWorldMixin {
     @Shadow
     private WorldType[] worldTypes;
 

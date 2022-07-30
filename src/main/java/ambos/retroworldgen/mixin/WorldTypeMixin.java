@@ -11,12 +11,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = WorldType.class, remap = false)
-public class WorldTypeMixin {
+final class WorldTypeMixin {
     @Shadow
     public static WorldType[] worldTypes;
     private static WorldType overworldRetro2;
     private static WorldType overworldRetro3;
-
 
     @Inject(method = "<clinit>", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/src/WorldType;<init>(ILjava/lang/String;)V", ordinal = 0))
