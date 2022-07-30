@@ -11,22 +11,18 @@ public class IndevNoiseGeneratorPerlin extends NoiseGenerator {
     private double yCoord;
     private double zCoord;
 
-    public IndevNoiseGeneratorPerlin() {
-        this(new Random());
-    }
-
-    public IndevNoiseGeneratorPerlin(Random random1) {
+    public IndevNoiseGeneratorPerlin(Random random) {
         this.permutations = new int[512];
-        this.xCoord = random1.nextDouble() * 256.0D;
-        this.yCoord = random1.nextDouble() * 256.0D;
-        this.zCoord = random1.nextDouble() * 256.0D;
+        this.xCoord = random.nextDouble() * 256.0D;
+        this.yCoord = random.nextDouble() * 256.0D;
+        this.zCoord = random.nextDouble() * 256.0D;
 
         int i2;
         for(i2 = 0; i2 < 256; this.permutations[i2] = i2++) {
         }
 
         for(i2 = 0; i2 < 256; ++i2) {
-            int i3 = random1.nextInt(256 - i2) + i2;
+            int i3 = random.nextInt(256 - i2) + i2;
             int i4 = this.permutations[i2];
             this.permutations[i2] = this.permutations[i3];
             this.permutations[i3] = i4;

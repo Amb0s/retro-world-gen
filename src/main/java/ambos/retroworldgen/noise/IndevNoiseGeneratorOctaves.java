@@ -8,18 +8,13 @@ public class IndevNoiseGeneratorOctaves extends NoiseGenerator {
     private IndevNoiseGeneratorPerlin[] generatorCollection;
     private int octaves;
 
-    public IndevNoiseGeneratorOctaves(int i1) {
-        this(new Random(), i1);
-    }
+    public IndevNoiseGeneratorOctaves(Random random, int i) {
+        this.octaves = i;
+        this.generatorCollection = new IndevNoiseGeneratorPerlin[i];
 
-    public IndevNoiseGeneratorOctaves(Random random1, int i2) {
-        this.octaves = i2;
-        this.generatorCollection = new IndevNoiseGeneratorPerlin[i2];
-
-        for(int i3 = 0; i3 < i2; ++i3) {
-            this.generatorCollection[i3] = new IndevNoiseGeneratorPerlin(random1);
+        for(int i3 = 0; i3 < i; ++i3) {
+            this.generatorCollection[i3] = new IndevNoiseGeneratorPerlin(random);
         }
-
     }
 
     public final double noiseGenerator(double d1, double d3) {
