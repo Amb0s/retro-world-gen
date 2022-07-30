@@ -2,6 +2,7 @@
 
 ## Addition
 * Infdev 20100415 world gen
+* Indev 20100223 world gen
 
 ## Installation
 
