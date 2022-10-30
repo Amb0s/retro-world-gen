@@ -2,22 +2,35 @@
   "schemaVersion": 1,
   "id": "retroworldgen",
   "version": "${version}",
+
   "name": "Retro World Gen",
   "description": "Adds Infdev and Indev world generation options.",
   "authors": [
     "Ambos"
   ],
   "contact": {
-    "issues": "https://github.com/Amb0s/retro-world-gen/issues",
-    "sources": "https://github.com/Amb0s/retro-world-gen"
+    "homepage": "https://github.com/Amb0s/retro-world-gen",
+    "sources": "https://github.com/Amb0s/retro-world-gen",
+    "issues": "https://github.com/Amb0s/retro-world-gen/issues"
   },
+
   "license": "MIT",
-  "icon": "assets/retroworldgen/icon.png",
+
+  "icon": "icon.png",
+
   "environment": "*",
+  "entrypoints": {
+    "main": [
+      "ambos.retroworldgen.RetroWorldGen"
+    ]
+  },
   "mixins": [
-    "retroworldgen.mixins.json"
+      "retroworldgen.mixins.json"
   ],
+
   "depends": {
     "fabricloader": ">=0.13.3"
+  },
+  "suggests": {
   }
 }

@@ -1,52 +1,58 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
-    id 'java'
+	id 'babric-loom' version '0.12-SNAPSHOT'
+	id 'java'
 }
-// No babric loom here
 
 group = project.mod_group
 archivesBaseName = project.mod_name
 version = project.mod_version
 
-repositories {
-    mavenCentral()
-    maven {
-        name = 'Babric'
-        url = 'https://maven.glass-launcher.net/babric'
-    }
-    maven {
-        name = 'Fabric'
-        url = 'https://maven.fabricmc.net/'
-    }
+loom {
+	gluedMinecraftJar()
+	noIntermediateMappings()
+	customMinecraftManifest.set("https://github.com/azurelmao/bta-manifest-repo/releases/download/v1.7.6.2_02/1.7.6.2_02.json")
 }
 
-// We use shadow here to avoid the following dependencies being shadowed.
-// If you want to add your own dependency, you should also use 'shadow' most of the time.
-// Yet, if you want to include your dependency, use normal 'implementation' instead.
+repositories {
+	mavenCentral()
+	maven {
+		name = 'Babric'
+		url = 'https://maven.glass-launcher.net/babric'
+	}
+	maven {
+		name = 'Fabric'
+		url = 'https://maven.fabricmc.net/'
+	}
+	ivy {
+		url = "https://github.com/Better-than-Adventure"
+		patternLayout {
+			artifact("[organisation]/releases/download/v[revision]/[module].jar")
+			m2compatible = true
+		}
+		metadataSources { artifact() }
+	}
+}
+
 dependencies {
-    shadow "org.ow2.asm:asm:${project.asm_version}"
-    shadow "org.ow2.asm:asm-analysis:${project.asm_version}"
-    shadow "org.ow2.asm:asm-commons:${project.asm_version}"
-    shadow "org.ow2.asm:asm-tree:${project.asm_version}"
-    shadow "org.ow2.asm:asm-util:${project.asm_version}"
+	minecraft "bta-download-repo:bta:${project.bta_version}"
+	mappings loom.layered() {}
 
-    shadow("net.fabricmc:sponge-mixin:${project.mixin_version}") {
-        exclude module: 'launchwrapper'
-        exclude module: 'guava'
-    }
+	// I'm not going to put this jar in my repo
+	// I don't use client/server run configurations anyway...
+	// modRuntimeOnly files("libs/minecraft-client-base.jar")
+	modImplementation "babric:fabric-loader:${project.loader_version}"
 
-    shadow "babric:fabric-loader:${project.loader_version}"
+	modImplementation "org.slf4j:slf4j-api:1.8.0-beta4"
+	modImplementation "org.apache.logging.log4j:log4j-slf4j18-impl:2.16.0"
 
-    shadow files('libs/bta.jar')
-
-    shadow "org.slf4j:slf4j-api:1.8.0-beta4"
-    shadow 'org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2'
+	modImplementation("org.apache.commons:commons-lang3:3.12.0")
+	include("org.apache.commons:commons-lang3:3.12.0")
 }
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_1_8
 	targetCompatibility = JavaVersion.VERSION_1_8
-    withSourcesJar()
+	withSourcesJar()
 }
 
 tasks.withType(JavaCompile) {
@@ -54,23 +60,15 @@ tasks.withType(JavaCompile) {
 }
 
 jar {
-    from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
-    }
+	from("LICENSE") {
+		rename { "${it}_${archivesBaseName}" }
+	}
 }
-
-shadowJar {
-    from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
-    }
-}
-
-jar.finalizedBy tasks.shadowJar
 
 processResources {
-    inputs.property "version", project.version
+	inputs.property "version", version
 
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
+	filesMatching("fabric.mod.json") {
+		expand "version": version
+	}
 }
