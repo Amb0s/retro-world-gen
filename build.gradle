@@ -37,9 +37,7 @@ dependencies {
 	minecraft "bta-download-repo:bta:${project.bta_version}"
 	mappings loom.layered() {}
 
-	// I'm not going to put this jar in my repo
-	// I don't use client/server run configurations anyway...
-	// modRuntimeOnly files("libs/minecraft-client-base.jar")
+	modRuntimeOnly files("libs/minecraft-client-base.jar")
 	modImplementation "babric:fabric-loader:${project.loader_version}"
 
 	modImplementation "org.slf4j:slf4j-api:1.8.0-beta4"
