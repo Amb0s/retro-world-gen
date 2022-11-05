@@ -17,12 +17,15 @@
 ### Setup
 
 1. Download or clone this repository
-2. Follow the instructions for the [BTA Minimal Example Mod](https://github.com/azurelmao/bta-babric-minimal-example-mod) 
+2. Follow the instructions for the [BTA Babric Minimal Mod](https://github.com/Turnip-Labs/bta-minimal-mod)
 
-### Tip(s)
+Important: if you want to use the `Minecraft Client` run configuration in your IDE, you need to import a JAR file.
 
-* Since BTA is distributed without obfuscation, all Mixin classes must set the "remap" option to false.
-* ...
+1. Import the BTA! Babric instance into your launcher
+2. Start the game (don't close it)
+3. Go to Minecraft instance directory
+4. Copy the JAR inside the `bin` directory to `libs`
+5. Rename it to `minecraft-client-base.jar`
 
 ### Documentation
 
@@ -31,10 +34,12 @@
 * [Mixin cheatsheet](https://github.com/2xsaiko/mixin-cheatsheet/blob/master/README.md)
 * [Cursed Legacy Wiki](https://minecraft-cursed-legacy.github.io/wiki/index.html)
 
+Note: Since BTA is distributed without obfuscation, all Mixin classes must set the "remap" option to false.
+
 ### Example mods
 
-* [BTA Minimal Example Mod for Babric](https://github.com/azurelmao/bta-babric-minimal-example-mod)
-* [BTA Example Mod for Babric](https://github.com/azurelmao/bta-babric-example-mod)
+* [BTA Babric Minimal Mod](https://github.com/Turnip-Labs/bta-minimal-mod)
+* [BTA Babric Example Mod](https://github.com/Turnip-Labs/bta-example-mod)
 * [Old BTA Example Mod for Babric](https://github.com/pkstDev/BTAExampleMod-babric)
 * [Fabric Example Mod with StationAPI and BIN Mappings](https://github.com/calmilamsy/stationapi-example-mod/tree/dev/12)
 * [Minecraft Cursed Legacy Example Mod](https://github.com/minecraft-cursed-legacy/Example-Mod)
