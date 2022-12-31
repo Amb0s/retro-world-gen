@@ -16,8 +16,9 @@ final class GuiCreateWorldMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void changeAvailableWorldTypeList(GuiScreen guiscreen, CallbackInfo ci) {
-        this.worldTypes = Arrays.copyOf(this.worldTypes, this.worldTypes.length + 2);
-        this.worldTypes[this.worldTypes.length - 1] = WorldType.worldTypes[15];
-        this.worldTypes[this.worldTypes.length - 2] = WorldType.worldTypes[14];
+        this.worldTypes = Arrays.copyOf(this.worldTypes, this.worldTypes.length + 3);
+        this.worldTypes[this.worldTypes.length - 1] = WorldType.worldTypes[16];
+        this.worldTypes[this.worldTypes.length - 2] = WorldType.worldTypes[15];
+        this.worldTypes[this.worldTypes.length - 3] = WorldType.worldTypes[14];
     }
 }
