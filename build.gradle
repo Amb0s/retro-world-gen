@@ -31,6 +31,14 @@ repositories {
 		}
 		metadataSources { artifact() }
 	}
+	ivy {
+		url = "https://piston-data.mojang.com"
+		patternLayout {
+			artifact "v1/[organisation]/[revision]/[module].jar"
+			m2compatible = true
+		}
+		metadataSources { artifact() }
+	}
 }
 
 dependencies {
@@ -38,7 +46,7 @@ dependencies {
 	mappings loom.layered() {}
 
 	// Only used to fix the Client run configuration
-	modRuntimeOnly files("libs/minecraft-client-base.jar")
+	modRuntimeOnly "objects:client:43db9b498cb67058d2e12d394e6507722e71bb45"
 
 	modImplementation "babric:fabric-loader:${project.loader_version}"
 
