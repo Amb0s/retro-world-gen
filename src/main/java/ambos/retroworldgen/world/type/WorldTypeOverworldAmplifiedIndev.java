@@ -1,6 +1,6 @@
 package ambos.retroworldgen.world.type;
 
-import ambos.retroworldgen.world.ChunkGeneratorIndev;
+import ambos.retroworldgen.world.ChunkGeneratorAmplifiedIndev;
 import net.minecraft.core.world.World;
 import net.minecraft.core.world.biome.Biomes;
 import net.minecraft.core.world.biome.provider.BiomeProvider;
@@ -12,8 +12,8 @@ import net.minecraft.core.world.type.WorldTypeOverworld;
 import net.minecraft.core.world.weather.Weather;
 import net.minecraft.core.world.wind.WindManagerGeneric;
 
-public class WorldTypeOverworldIndev extends WorldTypeOverworld {
-    public WorldTypeOverworldIndev(String languageKey) {
+public class WorldTypeOverworldAmplifiedIndev extends WorldTypeOverworld {
+    public WorldTypeOverworldAmplifiedIndev(String languageKey) {
         super(languageKey, Weather.overworldClear, new WindManagerGeneric(), SeasonConfig.builder().withSingleSeason(Seasons.NULL).build());
     }
 
@@ -33,7 +33,7 @@ public class WorldTypeOverworldIndev extends WorldTypeOverworld {
     }
 
     public ChunkGenerator createChunkGenerator(World world) {
-        return new ChunkGeneratorIndev(world);
+        return new ChunkGeneratorAmplifiedIndev(world);
     }
 
     public float getCloudHeight() {

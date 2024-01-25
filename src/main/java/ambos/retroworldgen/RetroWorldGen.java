@@ -1,6 +1,6 @@
 package ambos.retroworldgen;
 
-import ambos.retroworldgen.world.type.WorldTypeOverworldIndev;
+import ambos.retroworldgen.world.type.WorldTypeOverworldAmplifiedIndev;
 import ambos.retroworldgen.world.type.WorldTypeOverworldInfdev;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.world.type.WorldTypes;
@@ -13,8 +13,10 @@ public class RetroWorldGen implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("RetroWorldGen initialized");
-        //WorldTypes.register(MOD_ID + ":"  + "overworld.infdev", new WorldTypeOverworldInfdev("worldType.overworld.infdev"));
-        WorldTypes.register(MOD_ID + ":"  + "overworld.indev", new WorldTypeOverworldIndev("worldType.overworld.indev"));
+        LOGGER.info("Retro World Gen initialized");
+        WorldTypes.register(MOD_ID + ":"  + "overworld.infdev", 
+            new WorldTypeOverworldInfdev(MOD_ID + "."  +"overworld.infdev"));
+        WorldTypes.register(MOD_ID + ":"  + "overworld.amplified.indev", 
+            new WorldTypeOverworldAmplifiedIndev(MOD_ID + "."  + "overworld.amplified.indev"));
     }
 }

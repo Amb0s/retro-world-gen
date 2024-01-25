@@ -12,7 +12,7 @@ import net.minecraft.core.world.generate.chunk.perlin.overworld.retro.SurfaceGen
 import net.minecraft.core.world.noise.CombinedPerlinNoise;
 import net.minecraft.core.world.noise.PerlinNoise;
 
-public class ChunkGeneratorIndev extends ChunkGenerator {
+public class ChunkGeneratorAmplifiedIndev extends ChunkGenerator {
     private final CombinedPerlinNoise combinedA;
     private final CombinedPerlinNoise combinedB;
     private final CombinedPerlinNoise combinedC;
@@ -22,7 +22,7 @@ public class ChunkGeneratorIndev extends ChunkGenerator {
     private final SurfaceGenerator sg;
     private final MapGenCaves cg;
 
-    public ChunkGeneratorIndev(World world) {
+    public ChunkGeneratorAmplifiedIndev(World world) {
         super(world, new ChunkDecoratorOverworldRetro(world));
         long seed = world.getRandomSeed();
         this.combinedA = new CombinedPerlinNoise(new PerlinNoise(seed, 8, 0), new PerlinNoise(seed, 8, 8));
