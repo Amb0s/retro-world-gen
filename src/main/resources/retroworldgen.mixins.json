@@ -4,9 +4,7 @@
     "package": "ambos.retroworldgen.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
-        "ChunkProviderRetroMixin",
-        "GuiCreateWorldMixin",
-        "WorldTypeMixin"
+        "ChunkDecoratorOverworldRetroMixin"
     ],
     "client": [
     ],
