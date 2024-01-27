@@ -1,6 +1,6 @@
 package ambos.retroworldgen.mixin;
 
-import ambos.retroworldgen.world.type.WorldTypeOverworldAmplifiedIndev;
+import ambos.retroworldgen.world.type.WorldTypeOverworldAmplifiedClassic;
 import ambos.retroworldgen.world.type.WorldTypeOverworldInfdev;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.world.World;
@@ -26,7 +26,7 @@ final class ChunkDecoratorOverworldRetroMixin {
     private World world;
     @Shadow @Final private RetroPerlinNoise treeDensityNoise;
     private static final int TREE_DENSITY_MULTIPLIER_INFDEV = 3;
-    private static final int TREE_DENSITY_MULTIPLIER_INDEV = 5;
+    private static final int TREE_DENSITY_MULTIPLIER_AMPLIFIED_CLASSIC = 5;
 
     @Redirect(method = "decorate", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextInt(I)I", ordinal = 28))
     private int onNextRandomInt(Random random, int i) {
@@ -34,7 +34,7 @@ final class ChunkDecoratorOverworldRetroMixin {
             return 0; // Only generates big trees.
         }
 
-        if (world.getWorldType() instanceof WorldTypeOverworldAmplifiedIndev) {
+        if (world.getWorldType() instanceof WorldTypeOverworldAmplifiedClassic) {
             return -1; // Only generates small trees.
         }
 
@@ -43,7 +43,7 @@ final class ChunkDecoratorOverworldRetroMixin {
 
     @Inject(method = "decorate", at = @At(value = "FIELD", target = "Lnet/minecraft/core/block/BlockSand;fallInstantly:Z", ordinal = 1))
     private void increaseTreeDensity(Chunk chunk, CallbackInfo ci) {
-        if (world.getWorldType() instanceof WorldTypeOverworldInfdev || world.getWorldType() instanceof WorldTypeOverworldAmplifiedIndev) {
+        if (world.getWorldType() instanceof WorldTypeOverworldInfdev || world.getWorldType() instanceof WorldTypeOverworldAmplifiedClassic) {
             /* Initialize variables */
             Random rand = new Random(this.world.getRandomSeed());
             Object obj;
@@ -52,7 +52,7 @@ final class ChunkDecoratorOverworldRetroMixin {
                     (double) chunk.zPosition * 16 * 0.25) / 8.0 +
                     rand.nextDouble() * 4.0 + 4.0) / 3.0);
 
-            if (world.getWorldType() instanceof WorldTypeOverworldAmplifiedIndev) {
+            if (world.getWorldType() instanceof WorldTypeOverworldAmplifiedClassic) {
                 obj = new WorldFeatureTree(Block.leavesOakRetro.id, Block.logOak.id, 4);
             } else {
                 obj = new WorldFeatureTreeFancy(Block.leavesOakRetro.id, Block.logOak.id);
@@ -64,7 +64,7 @@ final class ChunkDecoratorOverworldRetroMixin {
             if (world.getWorldType() instanceof WorldTypeOverworldInfdev) {
                 treeDensityMultiplier = TREE_DENSITY_MULTIPLIER_INFDEV;
             } else {
-                treeDensityMultiplier = TREE_DENSITY_MULTIPLIER_INDEV;
+                treeDensityMultiplier = TREE_DENSITY_MULTIPLIER_AMPLIFIED_CLASSIC;
             }
 
             /* Increase tree density */

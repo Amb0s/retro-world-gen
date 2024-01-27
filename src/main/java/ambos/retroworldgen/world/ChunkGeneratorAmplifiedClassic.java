@@ -12,7 +12,7 @@ import net.minecraft.core.world.generate.chunk.perlin.overworld.retro.SurfaceGen
 import net.minecraft.core.world.noise.CombinedPerlinNoise;
 import net.minecraft.core.world.noise.PerlinNoise;
 
-public class ChunkGeneratorAmplifiedIndev extends ChunkGenerator {
+public class ChunkGeneratorAmplifiedClassic extends ChunkGenerator {
     private final CombinedPerlinNoise combinedA;
     private final CombinedPerlinNoise combinedB;
     private final CombinedPerlinNoise combinedC;
@@ -22,7 +22,7 @@ public class ChunkGeneratorAmplifiedIndev extends ChunkGenerator {
     private final SurfaceGenerator sg;
     private final MapGenCaves cg;
 
-    public ChunkGeneratorAmplifiedIndev(World world) {
+    public ChunkGeneratorAmplifiedClassic(World world) {
         super(world, new ChunkDecoratorOverworldRetro(world));
         long seed = world.getRandomSeed();
         this.combinedA = new CombinedPerlinNoise(new PerlinNoise(seed, 8, 0), new PerlinNoise(seed, 8, 8));
@@ -37,7 +37,6 @@ public class ChunkGeneratorAmplifiedIndev extends ChunkGenerator {
 
     protected ChunkGeneratorResult doBlockGeneration(Chunk chunk) {
         ChunkGeneratorResult result = new ChunkGeneratorResult();
-        short[] blocks = new short[256 * this.world.getHeightBlocks()];
         int chunkX = chunk.xPosition;
         int chunkZ = chunk.zPosition;
         float mod = 1.3F;
@@ -52,11 +51,7 @@ public class ChunkGeneratorAmplifiedIndev extends ChunkGenerator {
                     noiseB = noiseA;
                 }
 
-                double height;
-                if ((height = Math.max(noiseA, noiseB) /* / 2.0*/) < 0.0) {
-                    //height *= 0.8;
-                }
-
+                double height = Math.max(noiseA, noiseB);
                 heightMap[x + z * 16] = (int)height;
             }
         }
@@ -92,7 +87,7 @@ public class ChunkGeneratorAmplifiedIndev extends ChunkGenerator {
                 }
 
                 for(y = this.world.getWorldType().getMinY(); y < this.world.getWorldType().getMaxY(); ++y) {
-                    int index = x << this.world.getHeightBlocks() + 4 | z << this.world.getHeightBlocks() | y;
+                    Chunk.makeBlockIndex(x, y, z);
                     int blockID = 0;
                     if (y < newHeight) {
                         blockID = this.world.getWorldType().getFillerBlock();
