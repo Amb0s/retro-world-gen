@@ -14,8 +14,8 @@ public class RetroWorldGen implements ModInitializer {
     @Override
     public void onInitialize() {
         LOGGER.info("Retro World Gen initialized");
-        //WorldTypes.register(MOD_ID + ":"  + "overworld.infdev", 
-            //new WorldTypeOverworldInfdev(MOD_ID + "."  +"overworld.infdev"));
+        WorldTypes.register(MOD_ID + ":"  + "overworld.infdev", 
+            new WorldTypeOverworldInfdev(MOD_ID + "."  +"overworld.infdev"));
         WorldTypes.register(MOD_ID + ":"  + "overworld.amplified.amplified.classic", 
             new WorldTypeOverworldAmplifiedClassic(MOD_ID + "."  + "overworld.amplified.classic"));
     }

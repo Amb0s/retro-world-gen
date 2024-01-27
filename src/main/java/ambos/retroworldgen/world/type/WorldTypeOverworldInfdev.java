@@ -1,5 +1,6 @@
 package ambos.retroworldgen.world.type;
 
+import ambos.retroworldgen.world.ChunkGeneratorInfdev;
 import net.minecraft.core.world.World;
 import net.minecraft.core.world.biome.Biomes;
 import net.minecraft.core.world.biome.provider.BiomeProvider;
@@ -33,7 +34,7 @@ public class WorldTypeOverworldInfdev extends WorldTypeOverworld {
     }
 
     public ChunkGenerator createChunkGenerator(World world) {
-        return new ChunkGeneratorOverworldRetro(world);
+        return new ChunkGeneratorInfdev(world);
     }
 
     public float getCloudHeight() {
