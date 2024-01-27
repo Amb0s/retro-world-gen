@@ -7,7 +7,6 @@ import net.minecraft.core.world.biome.provider.BiomeProvider;
 import net.minecraft.core.world.biome.provider.BiomeProviderSingleBiome;
 import net.minecraft.core.world.config.season.SeasonConfig;
 import net.minecraft.core.world.generate.chunk.ChunkGenerator;
-import net.minecraft.core.world.generate.chunk.perlin.overworld.retro.ChunkGeneratorOverworldRetro;
 import net.minecraft.core.world.season.Seasons;
 import net.minecraft.core.world.type.WorldTypeOverworld;
 import net.minecraft.core.world.weather.Weather;

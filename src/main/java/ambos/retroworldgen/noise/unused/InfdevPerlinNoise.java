@@ -1,6 +1,5 @@
 package ambos.retroworldgen.noise.unused;
 
-import ambos.retroworldgen.noise.unused.InfdevImprovedNoise;
 import net.minecraft.core.world.noise.BasePerlinNoise;
 
 import java.util.Random;

@@ -1,6 +1,5 @@
 package ambos.retroworldgen.noise.unused;
 
-import ambos.retroworldgen.noise.unused.BaseImprovedIndevNoise;
 import net.minecraft.core.world.noise.SurfaceNoise;
 
 import java.util.Random;

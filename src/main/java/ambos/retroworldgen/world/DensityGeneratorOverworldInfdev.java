@@ -3,10 +3,8 @@ package ambos.retroworldgen.world;
 import net.minecraft.core.world.World;
 import net.minecraft.core.world.chunk.Chunk;
 import net.minecraft.core.world.generate.chunk.perlin.DensityGenerator;
-import net.minecraft.core.world.generate.chunk.perlin.overworld.DensityGeneratorOverworld;
 import net.minecraft.core.world.noise.BasePerlinNoise;
 import net.minecraft.core.world.noise.PerlinNoise;
-import net.minecraft.core.world.noise.RetroPerlinNoise;
 import net.minecraft.core.world.type.WorldTypes;
 
 public class DensityGeneratorOverworldInfdev implements DensityGenerator {
