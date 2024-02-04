@@ -4,6 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -21,10 +22,19 @@ public class LevelGeneratorMixin {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void changeWorldSettings(int sizeX, int sizeY, int sizeZ, IndevWorldType worldType, IndevWorldTheme worldTheme, CallbackInfo ci) {
-        this.sizeX = 1024;
-        this.sizeY = 127;
-        this.sizeZ = 1024;
+        this.sizeX = 512;
+        this.sizeY = 256;
+        this.sizeZ = 512;
         this.worldType = IndevWorldType.ISLAND;
-        this.worldTheme = IndevWorldTheme.NORMAL;
+        this.worldTheme = IndevWorldTheme.WOODS;
+    }
+
+    @Redirect(method = "generate", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D", ordinal = 0))
+    private double increaseHeight(double heightNoiseA, double heightNoiseB) {
+        if (false) {
+            return Math.max(heightNoiseA, heightNoiseB) * 2;
+        }
+
+        return Math.max(heightNoiseA, heightNoiseB);
     }
 }
